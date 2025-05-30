@@ -19,7 +19,7 @@ cd sonu.dev
 ```
 
 
-Create a `.env` file similar to [`.env.example`](https://github.com/Sonupandit9693/blob/main/.env.example).
+Create a `.env` file similar to [`.env.example`](https://github.com/Sonupandit9693/sonu.dev/blob/main/.env.example).
 
 Then install dependencies and run the development server:
 ```sh-session
