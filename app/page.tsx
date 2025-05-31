@@ -42,15 +42,28 @@ export default function Home() {
 
         <div className="my-16 text-center animate-fade-in">
           <h2 className="text-sm text-zinc-500">
-            I'm building{" "}
+            Software Development Engineer @{" "}
             <Link
+              target="_blank"
+              href="https://www.cyfuture.com/"
+              className="underline duration-500 hover:text-zinc-300"
+            >
+              Cyfuture India Pvt Ltd
+            </Link>
+            <br />
+            <span className="text-zinc-400">
+              Building innovative solutions with a focus on quality and performance.
+            </span>
+            <br />
+            {/* Uncomment the line below to add a link to unkey.dev */} 
+            {/* <Link
               target="_blank"
               href="https://unkey.dev"
               className="underline duration-500 hover:text-zinc-300"
             >
               unkey.dev
-            </Link>{" "}
-            to solve API authentication and authorization for developers.
+            </Link>{" "} */}
+
           </h2>
         </div>
       </div>

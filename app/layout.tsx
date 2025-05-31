@@ -5,20 +5,21 @@ import { Metadata } from "next";
 import { Analytics } from "./components/analytics";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://sonudev.vercel.app"),
   title: {
-    default: "chronark.com",
-    template: "%s | chronark.com",
+    default: "sonu.dev",
+    template: "%s | sonudev.vercel.app",
   },
-  description: "Co-founder of unkey.dev and founder of planetfall.io",
+  description: "Software Developement Engineer & Open Source Enthusiast",
   openGraph: {
-    title: "chronark.com",
+    title: "sonu.dev",
     description:
-      "Co-founder of unkey.dev and founder of planetfall.io",
-    url: "https://chronark.com",
-    siteName: "chronark.com",
+      "Software Developement Engineer & Open Source Enthusiast",
+    url: "https://sonudev.vercel.app",
+    siteName: "sonudev.vercel.app",
     images: [
       {
-        url: "https://chronark.com/og.png",
+        url: "https://sonudev.vercel.app/favicon.png",
         width: 1920,
         height: 1080,
       },
@@ -38,7 +39,7 @@ export const metadata: Metadata = {
     },
   },
   twitter: {
-    title: "Chronark",
+    title: "@SonuKum29372459",
     card: "summary_large_image",
   },
   icons: {
