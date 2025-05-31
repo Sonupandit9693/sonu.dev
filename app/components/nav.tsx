@@ -1,11 +1,12 @@
 "use client";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Menu, X } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 
 export const Navigation: React.FC = () => {
 	const ref = useRef<HTMLElement>(null);
 	const [isIntersecting, setIntersecting] = useState(true);
+	const [menuOpen, setMenuOpen] = useState(false);
 
 	useEffect(() => {
 		if (!ref.current) return;
@@ -17,56 +18,71 @@ export const Navigation: React.FC = () => {
 		return () => observer.disconnect();
 	}, []);
 
+	const navLinks = [
+		{ href: "/experience", label: "Experience" },
+		{ href: "/projects", label: "Projects" },
+		{ href: "/blogs", label: "Blogs" },
+		{ href: "/contact", label: "Contact" },
+		{ href: "/skills", label: "Technical Skills" },
+	];
+
 	return (
 		<header ref={ref}>
 			<div
-				className={`fixed inset-x-0 top-0 z-50 backdrop-blur  duration-200 border-b  ${
+				className={`fixed inset-x-0 top-0 z-50 backdrop-blur duration-200 border-b ${
 					isIntersecting
 						? "bg-zinc-900/0 border-transparent"
-						: "bg-zinc-900/500  border-zinc-800 "
+						: "bg-zinc-900/50 border-zinc-800"
 				}`}
 			>
-				<div className="container flex flex-row-reverse items-center justify-between p-6 mx-auto">
-					<div className="flex justify-between gap-8">
-						<Link
-							href="/experience"
-							className="duration-200 text-zinc-400 hover:text-zinc-100"
-						>
-							Experience
-						</Link>
-						<Link
-							href="/projects"
-							className="duration-200 text-zinc-400 hover:text-zinc-100"
-						>
-							Projects
-						</Link>
-						<Link
-							href="/blogs"
-							className="duration-200 text-zinc-400 hover:text-zinc-100"
-						>
-							Blogs
-						</Link>
-						<Link
-							href="/contact"
-							className="duration-200 text-zinc-400 hover:text-zinc-100"
-						>
-							Contact
-						</Link>
-						<Link
-							href="/skills"
-							className="duration-200 text-zinc-400 hover:text-zinc-100"
-						>
-							Technical Skills
-						</Link>
-					</div>
-
+				<div className="container flex items-center justify-between p-6 mx-auto">
+					{/* Back Button */}
 					<Link
 						href="/"
-						className="duration-200 text-zinc-300 hover:text-zinc-100"
+						className="text-zinc-300 hover:text-zinc-100 duration-200"
 					>
-						<ArrowLeft className="w-6 h-6 " />
+						<ArrowLeft className="w-6 h-6" />
 					</Link>
+
+					{/* Desktop Links */}
+					<div className="hidden md:flex gap-8">
+						{navLinks.map((link) => (
+							<Link
+								key={link.href}
+								href={link.href}
+								className="text-zinc-400 hover:text-zinc-100 duration-200"
+							>
+								{link.label}
+							</Link>
+						))}
+					</div>
+
+					{/* Mobile Menu Button */}
+					<button
+						className="md:hidden text-zinc-400 hover:text-zinc-100"
+						onClick={() => setMenuOpen(!menuOpen)}
+					>
+						{menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+					</button>
 				</div>
+
+				{/* Mobile Dropdown Menu */}
+				{menuOpen && (
+					<div className="md:hidden px-6 pb-6 pt-0">
+						<div className="flex flex-col space-y-4">
+							{navLinks.map((link) => (
+								<Link
+									key={link.href}
+									href={link.href}
+									className="text-zinc-400 hover:text-zinc-100 duration-200"
+									onClick={() => setMenuOpen(false)}
+								>
+									{link.label}
+								</Link>
+							))}
+						</div>
+					</div>
+				)}
 			</div>
 		</header>
 	);
