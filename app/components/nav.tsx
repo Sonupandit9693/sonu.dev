@@ -21,9 +21,10 @@ export const Navigation: React.FC = () => {
 	const navLinks = [
 		{ href: "/experience", label: "Experience" },
 		{ href: "/projects", label: "Projects" },
-		{ href: "/blogs", label: "Blogs" },
+		// { href: "/blogs", label: "Blogs" },
 		{ href: "/contact", label: "Contact" },
 		{ href: "/skills", label: "Technical Skills" },
+		{ href: "/resume", label: "Resume" }
 	];
 
 	return (
