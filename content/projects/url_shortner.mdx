@@ -1,0 +1,115 @@
+---
+title: "URL Shortener Project"
+description: "A simple Node.js-based URL shortener app with MongoDB and Express.js."
+date: "2023-06-05"
+url: "https://github.com/Sonupandit9693/Learning-Node-js-Project/tree/main/Url-Shortner"
+published: true
+repository: "Sonupandit9693/Learning-Node-js-Project/tree/main/Url-Shortner/"
+---
+
+# 🔗 URL Shortener Project
+
+A lightweight, efficient **URL Shortener** application built with **Node.js**, **Express**, and **MongoDB**. This backend-focused project allows users to convert long URLs into short ones and redirect back to the original destination—showcasing key backend skills such as API development, error handling, and database management.
+
+---
+
+## ✨ Features
+
+- 🔗 **Shorten URLs**: Generate unique, shortened links  
+- ↪️ **Redirection**: Automatically redirect short URLs to the original link  
+- 📡 **REST API**: Clean endpoints for interacting with the application  
+- 💾 **MongoDB Integration**: URL mappings stored using Mongoose ODM  
+- 🚫 **Error Handling**: Invalid URLs and non-existent short codes handled gracefully  
+- 🔧 **Modular Design**: Easily extendable for auth, analytics, and more  
+
+---
+
+## 🛠 Tech Stack
+
+- **Backend**: Node.js, Express.js  
+- **Database**: MongoDB (with Mongoose)  
+- **Utilities**: dotenv, nanoid or shortid for unique code generation  
+
+---
+
+## 📁 Folder Structure
+
+```
+
+Url-Shortner/
+├── controllers/
+├── models/
+├── routes/
+├── .env
+├── app.js
+├── package.json
+└── README.md
+
+````
+
+---
+
+## ⚙️ How It Works
+
+1. A **POST** request is made with a long URL  
+2. Server generates a short ID and stores the mapping in MongoDB  
+3. A **GET** request with the short code redirects to the original URL  
+
+---
+
+## 🔄 Sample API Usage
+
+### ➕ Create Short URL  
+
+**POST** `/api/shorten`  
+
+```json
+{
+  "originalUrl": "https://www.example.com"
+}
+````
+
+**Response:**
+
+```json
+{
+  "shortUrl": "https://yourdomain.com/abc123"
+}
+```
+
+### 🔁 Redirect
+
+**GET** `/:shortCode`
+Redirects user to the original long URL
+
+---
+
+## 🧪 Running Locally
+
+```bash
+git clone https://github.com/Sonupandit9693/Learning-Node-js-Project.git
+cd Learning-Node-js-Project/Url-Shortner
+npm install
+```
+
+* Create a `.env` file with:
+
+  ```
+  MONGODB_URI=your-mongodb-connection-string
+  BASE_URL=http://localhost:3000
+  ```
+
+```bash
+npm start
+```
+
+* Test the API using **Postman**, **Thunder Client**, or a browser.
+
+---
+
+## 📚 What I Learned
+
+* REST API architecture with Express
+* MongoDB schema modeling and integration
+* Error handling and async programming
+* Environment configuration and scalable folder structures

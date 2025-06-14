@@ -1,0 +1,80 @@
+---
+title: Distributed Python Microservices with Kubernetes
+description: A Python-based microservices system featuring JWT authentication, API gateway, RabbitMQ messaging, MongoDB storage, and Kubernetes deployments.
+date: "2025-03-20"
+url: https://github.com/Sonupandit9693/distributed-python-k8s/
+published: true
+repository: Sonupandit9693/distributed-python-k8s
+---
+![Architecture Diagram](/image.png)
+![Service Overview](/image-3.png)
+![Kubernetes Setup](/image-4.png)
+
+**Distributed Python Microservices with Kubernetes** is a fully containerized and scalable microservices architecture built using **Python (FastAPI)** and orchestrated with **Kubernetes**. The system includes core services like authentication, API gateway, async messaging with RabbitMQ, and file storage using MongoDB GridFS.
+
+---
+
+## 📌 Features
+
+- 🔐 **Auth Service** – JWT-based user authentication
+- 🌐 **API Gateway** – Centralized routing for services
+- 📨 **RabbitMQ** – Event-driven asynchronous communication
+- 🗄 **MongoDB & GridFS** – Document & file storage
+- 🔄 **Interservice Communication** – HTTP and Event-based
+- ☸️ **Kubernetes** – Scalable deployment using StatefulSet, Ingress
+
+---
+
+## 🚀 Setup & Installation
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/Sonupandit9693/distributed-python-k8s.git
+cd distributed-python-k8s
+```
+
+### 2. Start with Docker Compose
+
+```bash
+docker-compose up --build
+```
+
+### 3. Deploy to Kubernetes
+
+```bash
+kubectl apply -f k8s/
+```
+
+---
+
+## 🏗️ Architecture Overview
+
+- **Auth Service**: JWT-based authentication and user session management
+- **API Gateway**: Request routing and API aggregation
+- **Converter Service**: Handles transformation or computation logic
+- **Notification Service**: Manages email/SMS notifications via events
+
+---
+
+## 🛠 Technologies Used
+
+- 🚀 **FastAPI (Python)**
+- 🐳 **Docker** & ☸️ **Kubernetes**
+- 📬 **RabbitMQ**
+- 🍃 **MongoDB** with **GridFS**
+- 🔗 **gRPC** and **REST APIs** for service communication
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Feel free to fork the project, submit pull requests, or open issues.
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**.
+
+> Developed by [Sonu Kumar](https://github.com/Sonupandit9693) to demonstrate scalable, event-driven microservice architecture using Python and Kubernetes.

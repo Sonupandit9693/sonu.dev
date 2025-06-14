@@ -1,0 +1,112 @@
+---
+title: Docusign Integration for Frappe ERPNext
+description: Seamlessly integrate Docusign with Frappe ERPNext to enable secure, automated digital document signing directly within your ERP system.
+date: "2024-07-01"
+url: https://github.com/Sonupandit9693/Docusign-integration
+published: true
+repository: Sonupandit9693/Docusign-integration
+---
+
+[![Frappe ERPNext](https://img.shields.io/badge/Frappe-ERPNext-blue)](https://github.com/Sonupandit9693/Docusign-integration)
+
+**Docusign Integration for Frappe ERPNext** is a custom-built app that connects your ERPNext system with the Docusign API. It allows users to generate, send, and manage digitally signed documents directly within the ERP, improving compliance, speed, and reducing manual workflows.
+
+---
+
+## ✨ Features
+
+- 🔐 OAuth2-based secure Docusign login
+- 📤 Send documents for signature from ERPNext
+- 🔄 Webhook-driven status tracking
+- 📁 Automatically store signed documents and audit trails
+- 🧩 Easy setup via ERPNext UI
+- ✅ Supports Frappe v13, v14, v15
+
+---
+
+## 📦 Installation
+
+> ERPNext version 13, 14, or 15 is required.
+
+### 1. Get the App
+
+```bash
+bench get-app --branch [branch-name] https://github.com/Sonupandit9693/Docusign-integration.git
+```
+
+### 2. Install the App
+
+```bash
+bench --site [your-site-name] install-app dsc_erpnext
+```
+
+### 3. Configure in ERPNext
+
+Go to **Docusign Settings** and fill in:
+- Client ID
+- Secret Key
+- Account ID
+- Base Path
+- Redirect URI
+- Server URL
+
+---
+
+## 🔑 Docusign Developer Setup
+
+To connect with Docusign:
+
+1. Create an [app in the Docusign developer portal](https://developers.docusign.com/)
+2. Generate:
+   - Integration Key
+   - Secret Key
+   - Redirect URI:  
+     ```
+     https://<your-domain>/api/method/dsc_erpnext.dsc_api.auth_login
+     ```
+3. Configure webhook for document status:
+   ```
+   https://<your-domain>/api/method/dsc_erpnext.dsc_api.sign_document
+   ```
+
+> Screenshots are available in the GitHub repo for each setup step.
+
+---
+
+## 🔧 Document Flow in ERPNext
+
+1. Navigate to **Digital Signature Document**.
+2. Select a doctype like **Sales Invoice** or **Purchase Order**.
+3. Add document, assign signer email and role.
+4. Click the **DSC 1** button to send for signature.
+5. Track signing progress and retrieve final documents within ERPNext.
+
+---
+
+## 📁 Signed Document Management
+
+Once signing is complete:
+- The document is updated with signed files and certificate attachments
+- Signing metadata is saved in a child table
+- Status is updated via webhook
+
+---
+
+## 🚀 Benefits
+
+- Zero manual effort for printing/signing/scanning
+- Works for multiple document types
+- Easy integration for ERP workflows (Sales, Purchase, HR, etc.)
+- Built using secure industry standards (OAuth2, JWT)
+
+---
+
+## 🔗 Links
+
+- 🔗 [GitHub Repository](https://github.com/Sonupandit9693/Docusign-integration)
+- 📄 [Docusign Developer Portal](https://developers.docusign.com/)
+- 📘 [ERPNext Docs](https://docs.erpnext.com)
+
+---
+
+> Built by [Sonu Kumar](https://github.com/Sonupandit9693) to modernize ERP workflows through trusted digital signatures.

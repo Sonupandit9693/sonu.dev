@@ -1,0 +1,150 @@
+---
+title: "Project Management System"
+description: "A comprehensive Java Spring Boot application for streamlined project management, task assignment, and team collaboration"
+date: "2025-05-24"
+url: "https://github.com/Sonupandit9693/Project-Management"
+published: true
+repository: "Sonupandit9693/Project-Management"
+---
+
+# 📊 Project Management System
+
+A **comprehensive Project Management System** built with **Java Spring Boot** to streamline project management, task assignment, and team collaboration within organizations. This full-featured application demonstrates enterprise-level development practices and serves as an excellent **portfolio piece** for backend development expertise.
+
+---
+
+## 🚀 Features
+
+- 📋 **Project Creation & Management**: Easily create, edit, and manage multiple projects with detailed configurations
+- 👥 **Task Assignment**: Assign tasks to team members with deadlines, priorities, and status tracking
+- 🤝 **Team Collaboration**: Enable seamless collaboration through comments, status updates, and real-time notifications
+- 📈 **Progress Tracking**: Monitor project and task progress with visual dashboards and analytics
+- 🔐 **User Authentication**: Secure login system with role-based access control (Admin, Manager, Developer)
+- 📊 **Reporting**: Generate comprehensive project reports and export data in multiple formats
+- 🔔 **Notifications**: Real-time updates and email notifications for task assignments and deadlines
+
+---
+
+## 🛠️ Tech Stack
+
+- **Backend**: Java 17, Spring Boot 3.x, Spring MVC
+- **Security**: Spring Security for authentication and authorization
+- **Database**: MySQL/PostgreSQL with Spring Data JPA
+- **Build Tool**: Maven
+- **Testing**: JUnit 5, Mockito
+- **Documentation**: Swagger/OpenAPI
+- **Other Libraries**: Lombok, MapStruct, Validation API
+
+---
+
+## 🏗️ Architecture
+
+Built following **clean architecture principles** with:
+- **Layered Architecture**: Controller → Service → Repository → Entity
+- **RESTful API Design**: Well-structured endpoints with proper HTTP methods
+- **Database Design**: Normalized schema with proper relationships
+- **Exception Handling**: Global exception handling with custom error responses
+- **Validation**: Input validation using Bean Validation API
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Java 17 or higher
+- Maven 3.6+
+- MySQL/PostgreSQL database
+
+### Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/Sonupandit9693/Project-Management.git
+   cd Project-Management
+   ```
+
+2. **Configure database:**
+   ```properties
+   # Edit src/main/resources/application.properties
+   spring.datasource.url=jdbc:mysql://localhost:3306/project_management
+   spring.datasource.username=your_username
+   spring.datasource.password=your_password
+   ```
+
+3. **Build and run:**
+   ```bash
+   ./mvnw clean install
+   ./mvnw spring-boot:run
+   ```
+
+4. **Access the application:**
+   - API Documentation: `http://localhost:8080/swagger-ui.html`
+   - Application: `http://localhost:8080`
+
+---
+
+## 📱 API Endpoints
+
+### Authentication
+- `POST /api/auth/login` - User login
+- `POST /api/auth/register` - User registration
+- `POST /api/auth/logout` - User logout
+
+### Projects
+- `GET /api/projects` - Get all projects
+- `POST /api/projects` - Create new project
+- `GET /api/projects/{id}` - Get project by ID
+- `PUT /api/projects/{id}` - Update project
+- `DELETE /api/projects/{id}` - Delete project
+
+### Tasks
+- `GET /api/projects/{projectId}/tasks` - Get project tasks
+- `POST /api/projects/{projectId}/tasks` - Create new task
+- `PUT /api/tasks/{id}` - Update task
+- `DELETE /api/tasks/{id}` - Delete task
+
+---
+
+## 💡 Key Learning Outcomes
+
+This project demonstrates proficiency in:
+
+- **Enterprise Java Development**: Spring Boot ecosystem and best practices
+- **Database Design**: Complex entity relationships and data modeling
+- **Security Implementation**: Authentication, authorization, and data protection
+- **API Development**: RESTful services with proper documentation
+- **Testing**: Unit and integration testing strategies
+- **Project Architecture**: Clean, maintainable, and scalable code structure
+
+---
+
+## 📈 Future Enhancements
+
+- 🔄 Real-time updates with WebSocket integration
+- 📱 Mobile app development with React Native
+- 🤖 AI-powered task recommendations
+- 📊 Advanced analytics and reporting dashboard
+- 🔗 Integration with third-party tools (Slack, Jira, GitHub)
+
+---
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/Sonupandit9693/Project-Management/issues).
+
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+Made with ❤️ by **Sonu Kumar**  
+⭐ **Star this repo** if you found it helpful!
