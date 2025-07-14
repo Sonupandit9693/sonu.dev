@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { Linkedin, Twitter, Youtube, Instagram, Send, MessageCircle, Mail, icons, Github } from "lucide-react"
+import { Linkedin, Twitter, Github, Mail, Code, Award, Users, Zap } from "lucide-react"
 
 export default function About() {
   const socialLinks = [
@@ -10,22 +10,52 @@ export default function About() {
   ]
 
   const achievements = [
-    "Previously worked at (Extension Technologies).",
-    "Experience in developing scalable solutions for CRM, Finance, Banking, and Payment service platforms.",
-    "Bachelor in (Computer Science) from Maharishi Dayanand University, Rohtak.",
+    {
+      icon: <Code className="w-4 h-4" />,
+      text: "Senior Software Engineer with 2+ years of experience in AI-integrated enterprise systems"
+    },
+    {
+      icon: <Zap className="w-4 h-4" />,
+      text: "Led development of RAG-based enterprise knowledge platform with 80-90% improved relevance"
+    },
+    {
+      icon: <Users className="w-4 h-4" />,
+      text: "Delivered ERP modules for 5000+ users at Public Sector Undertaking (PSU) clients"
+    },
+    {
+      icon: <Award className="w-4 h-4" />,
+      text: "Bachelor in Computer Science from Maharishi Dayanand University (GPA: 8.6/10)"
+    }
+  ]
+
+  const techStack = [
+    { category: "Languages", skills: ["Python", "JavaScript", "TypeScript", "SQL"] },
+    { category: "Frameworks", skills: ["FastAPI", "Flask", "Django", "Next.js"] },
+    { category: "AI/ML", skills: ["GPT-4", "LangChain", "AutoGen", "Whisper API"] },
+    { category: "Cloud & DevOps", skills: ["Docker", "AWS", "Kubernetes", "CI/CD"] }
+  ]
+
+  const highlights = [
+    { number: "440+", label: "LeetCode Problems Solved" },
+    { number: "99.9%", label: "System Uptime Achieved" },
+    { number: "5000+", label: "Users Served" },
+    { number: "70%", label: "Process Automation Improvement" }
   ]
 
   return (
     <section className="min-h-screen bg-gradient-to-tl from-black via-zinc-600/20 to-black w-full overflow-hidden py-12 px-4 flex items-center justify-center">
-      <div className="max-w-5xl mx-auto w-full">
+      <div className="max-w-6xl mx-auto w-full">
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">About Me</h1>
+          <p className="text-slate-300 max-w-2xl mx-auto">
+            Senior Software Engineer specializing in AI-integrated enterprise systems and scalable backend solutions
+          </p>
         </div>
 
         {/* Main Content */}
         <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-slate-700/50 shadow-2xl">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
             {/* Image Section */}
             <div className="flex justify-center lg:justify-start">
               <div className="relative group">
@@ -36,7 +66,7 @@ export default function About() {
                 <div className="relative bg-slate-800 rounded-xl p-2">
                   <Image
                     src="/profile.jpeg"
-                    alt="Sonu Kumar - Software Developer Engineer"
+                    alt="Sonu Kumar - Senior Software Engineer"
                     width={300}
                     height={380}
                     className="rounded-lg object-cover w-full h-auto"
@@ -47,27 +77,33 @@ export default function About() {
             </div>
 
             {/* Content Section */}
-            <div className="text-white space-y-5">
+            <div className="text-white space-y-6">
               {/* Name and Title */}
               <div className="space-y-2">
                 <h2 className="text-xl md:text-2xl font-bold bg-gradient-to-r from-white via-blue-200 to-purple-200 bg-clip-text text-transparent">
                   Sonu Kumar
                 </h2>
-                <p className="text-base text-slate-300 font-medium leading-snug">Software Development Engineer @ Cyfuture India Pvt Ltd</p>
+                <p className="text-base text-slate-300 font-medium leading-snug">
+                  Senior Software Engineer @ Cyfuture India Pvt Ltd
+                </p>
+                <p className="text-sm text-slate-400 leading-relaxed">
+                  Specialized in AI/ML integration, FastAPI microservices, and enterprise-scale backend systems
+                </p>
               </div>
 
-              {/* Achievements */}
+              {/* Key Achievements */}
               <div className="space-y-3">
+                <h3 className="text-base font-semibold text-white">Key Achievements</h3>
                 {achievements.map((achievement, index) => (
                   <div key={index} className="flex items-start space-x-3">
-                    <div className="w-1.5 h-1.5 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full mt-2 flex-shrink-0"></div>
-                    <p className="text-sm text-slate-300 leading-relaxed">{achievement}</p>
+                    <div className="text-blue-400 mt-1 flex-shrink-0">{achievement.icon}</div>
+                    <p className="text-sm text-slate-300 leading-relaxed">{achievement.text}</p>
                   </div>
                 ))}
               </div>
 
               {/* Social Links */}
-              <div className="pt-4">
+              <div className="pt-2">
                 <h3 className="text-base font-semibold text-white mb-3">Connect with me</h3>
                 <div className="flex flex-wrap gap-3">
                   {socialLinks.map((social, index) => (
@@ -75,6 +111,7 @@ export default function About() {
                       key={index}
                       href={social.href}
                       target="_blank"
+                      rel="noopener noreferrer"
                       aria-label={social.label}
                       className="group relative p-2.5 bg-slate-700/50 hover:bg-slate-600/50 rounded-lg border border-slate-600/50 hover:border-slate-500/50 transition-all duration-300 hover:scale-110"
                     >
@@ -89,12 +126,33 @@ export default function About() {
                 </div>
               </div>
             </div>
-          </div>
+          </div>         
         </div>
       </div>
     </section>
   )
 }
+
+ {/* Tech Stack Section */}
+          // <div className="mt-8 pt-6 border-t border-slate-700/50">
+          //   <h3 className="text-lg font-semibold text-white mb-4 text-center">Technical Expertise</h3>
+          //   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          //     {techStack.map((stack, index) => (
+          //       <div key={index} className="bg-slate-700/30 rounded-lg p-4 border border-slate-600/30">
+          //         <h4 className="text-sm font-semibold text-blue-400 mb-2">{stack.category}</h4>
+          //         <div className="space-y-1">
+          //           {stack.skills.map((skill, skillIndex) => (
+          //             <div key={skillIndex} className="text-xs text-slate-300">
+          //               {skill}
+          //             </div>
+          //           ))}
+          //         </div>
+          //       </div>
+          //     ))}
+          //   </div>
+          // </div>
+
+
 
 {/* Additional Stats Section */}
     {/* <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6">
