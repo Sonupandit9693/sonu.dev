@@ -11,40 +11,55 @@ export interface Experience {
   companyLogo: string;
   color: string;
   current?: boolean;
+  highlightMetrics?: string[];
 }
 
 export const experiences: Experience[] = [
   {
     id: 1,
-    title: "Software Development Engineer",
+    title: "Software Engineer – Applied AI & Backend Systems",
     company: "Cyfuture India Pvt Ltd",
     location: "Noida, India",
     duration: "Jul 2024 - Present",
     type: "Full-time",
     description:
-      "Built and customized enterprise ERP solutions for a PSU client, aligning modules with government workflows and automating financial and operational processes.",
+      "Leading development of AI-integrated enterprise systems, RAG-based knowledge platforms, and scalable backend architecture for government and enterprise clients.",
     achievements: [
-      "Migrated legacy documents to structured ERP modules for automation across departments.",
-      "Built a complete financial module including invoice booking, deductions, and multi-mode payments.",
-      "Developed a property management system in compliance with Ind AS 116 for global use.",
-      "Customized payroll for project-wise bookings, arrears, and pay fixation workflows.",
-      "Designed GST reclaim reports and project-wise expenditure summaries using accounting dimensions.",
-      "Deployed scalable services on Kubernetes with CI/CD, optimized MySQL queries, and integrated CDN for performance.",
+      "Led development of RAG-based enterprise knowledge platform using LangChain, GPT-4, and Qdrant, achieving 80-90% improved search relevance across business-critical documentation",
+      "Architected modular FastAPI microservices for document parsing, OpenAI embedding generation, and vector indexing with real-time monitoring dashboards",
+      "Delivered comprehensive ERP modules for PSU clients serving 5,000+ users, covering payroll automation, leasing management, and GST compliance workflows",
+      "Engineered intelligent CRM automation using OpenCV and GPT-4 for visitor card text extraction, reducing manual data entry by 70%",
+      "Optimized high-volume SQL queries and MariaDB configurations, reducing dashboard query latency by 30%",
+      "Built multi-agent workflow orchestration systems for enterprise automation and document processing",
     ],
     technologies: [
       "Python",
-      "JavaScript",
+      "FastAPI",
+      "LangChain",
+      "GPT-4",
+      "Qdrant",
+      "OpenCV",
       "Frappe",
-      "MySQL",
-      "Kubernetes",
-      "Docker",
-      "CI/CD",
+      "MariaDB",
+      "PostgreSQL",
       "Redis",
+      "Docker",
+      "Kubernetes",
       "AWS",
+      "Apache Superset",
+      "Celery",
+      "RAG",
+      "Microservices"
     ],
     companyLogo: "",
     color: "from-blue-500 to-cyan-500",
     current: true,
+    highlightMetrics: [
+      "5,000+ users served",
+      "80-90% improved search relevance",
+      "70% reduction in manual work",
+      "30% query latency reduction"
+    ]
   },
   {
     id: 2,
@@ -54,27 +69,39 @@ export const experiences: Experience[] = [
     duration: "Jul 2023 - Jun 2024",
     type: "Full-time",
     description:
-      "Engineered scalable backend APIs and ERP customizations for client platforms involving reservations, document workflows, and CRM integrations.",
+      "Engineered scalable Flask REST APIs and ERP customizations for high-traffic booking systems and enterprise workflows.",
     achievements: [
-      "Developed REST APIs in Flask handling 10k+ concurrent room bookings with concurrency control.",
-      "Built credit management workflows for tracking and redeeming credits with usage-based validation.",
-      "Customized ERPNext for stock entry, product bundles, and CRM flows across 6+ client projects.",
-      "Integrated DocuSign for digital signatures and WhatsApp APIs (Interakt) for ERP messaging.",
-      "Enhanced field ticketing and assignment systems for LIXIL support operations.",
+      "Built scalable Flask REST APIs with multithreading and rate-limiting for real-time booking engine, handling 10,000+ concurrent users with 99.9% uptime",
+      "Developed real-time synchronization middleware between ERPNext and Zoho systems, reducing frontend latency by 50%",
+      "Engineered credit allocation engine for 1,000+ users, improving promotion tracking by 20%",
+      "Integrated WhatsApp Business API, Shopify API, and DocuSign for automated lead synchronization and approval workflows",
+      "Implemented secure OAuth-based authentication for document signing processes, reducing turnaround time by 30%",
+      "Customized ERPNext for stock management, product bundles, and CRM flows across 6+ client projects",
     ],
     technologies: [
       "Python",
       "Flask",
-      "Frappe",
-      "Redis",
-      "MariaDB",
-      "JavaScript",
       "ERPNext",
-      "Interakt API",
+      "Frappe",
+      "MariaDB",
+      "Redis",
+      "JavaScript",
+      "REST APIs",
+      "OAuth",
       "DocuSign API",
+      "WhatsApp Business API",
+      "Shopify API",
+      "Multithreading",
+      "Rate Limiting"
     ],
     companyLogo: "",
     color: "from-purple-500 to-pink-500",
+    highlightMetrics: [
+      "10,000+ concurrent users",
+      "99.9% uptime",
+      "50% latency reduction",
+      "30% faster processing"
+    ]
   },
   {
     id: 3,
@@ -84,11 +111,14 @@ export const experiences: Experience[] = [
     duration: "Nov 2022 - Jun 2023",
     type: "Internship",
     description:
-      "Contributed to backend development and API design as part of the ERP and booking system product teams.",
+      "Contributed to backend development, API design, and database optimization for ERP and booking system platforms.",
     achievements: [
-      "Designed credit-based booking eligibility module with REST endpoints.",
-      "Contributed to development and testing of file vault and POS modules.",
-      "Optimized database queries and participated in client demos and feedback loops.",
+      "Designed credit-based booking eligibility module with REST endpoints and validation logic",
+      "Developed file vault and POS modules with secure upload/download capabilities",
+      "Optimized database queries and schema design for improved performance",
+      "Participated in client demos, requirement gathering, and feedback implementation",
+      "Built responsive frontend components using Vue.js and Tailwind CSS",
+      "Implemented version control workflows and participated in code reviews",
     ],
     technologies: [
       "Python",
@@ -96,9 +126,36 @@ export const experiences: Experience[] = [
       "Frappe",
       "MySQL",
       "Tailwind CSS",
+      "REST APIs",
       "Git",
+      "Database Optimization",
+      "Frontend Development"
     ],
     companyLogo: "",
     color: "from-green-500 to-emerald-500",
+    highlightMetrics: [
+      "Multiple client projects",
+      "Database query optimization",
+      "Full-stack development"
+    ]
   },
 ];
+
+// Optional: Add a summary component for key metrics
+export const experienceSummary = {
+  totalExperience: "2+ years",
+  keyMetrics: [
+    "10,000+ concurrent users handled",
+    "5,000+ enterprise users served",
+    "80-90% improvement in search relevance",
+    "70% reduction in manual processes",
+    "99.9% system uptime achieved"
+  ],
+  coreExpertise: [
+    "AI/ML Integration",
+    "Backend Architecture",
+    "Enterprise Systems",
+    "High-Traffic APIs",
+    "Database Optimization"
+  ]
+};

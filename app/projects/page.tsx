@@ -20,7 +20,7 @@ export default async function ProjectsPage() {
     return acc;
   }, {} as Record<string, number>);
 
-  const featured = allProjects.find((project) => project.slug === "docusign")!;
+  const featured = allProjects.find((project) => project.slug === "meeting_ai_assitant")!;
   const top2 = allProjects.find((project) => project.slug === "portflio")!;
   const top3 = allProjects.find((project) => project.slug === "distrubuted")!;
   const sorted = allProjects
