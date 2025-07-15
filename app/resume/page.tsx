@@ -9,6 +9,15 @@ import {
   Award,
   Briefcase,
   GraduationCap,
+  Users,
+  Zap,
+  TrendingUp,
+  Code,
+  Building,
+  Bot,
+  Database,
+  Cloud,
+  Target,
 } from "lucide-react";
 import { Navigation } from "../components/nav";
 import { Card } from "../components/card"; // Adjust path as needed
@@ -19,24 +28,92 @@ export default function ResumeComponent() {
       icon: <Briefcase className="w-5 h-5" />,
       label: "Years Experience",
       value: "2+",
+      description: "Production-grade systems"
     },
     {
-      icon: <GraduationCap className="w-5 h-5" />,
-      label: "Education",
-      value: "Bachelor's in Software Development",
+      icon: <Users className="w-5 h-5" />,
+      label: "Users Served",
+      value: "5000+",
+      description: "Enterprise applications"
+    },
+    {
+      icon: <TrendingUp className="w-5 h-5" />,
+      label: "System Uptime",
+      value: "99.9%",
+      description: "High availability"
+    },
+    {
+      icon: <Code className="w-5 h-5" />,
+      label: "LeetCode Solved",
+      value: "340+",
+      description: "Algorithm problems"
+    },
+  ];
+
+  const keyHighlights = [
+    {
+      icon: <Bot className="w-6 h-6" />,
+      title: "AI-Integrated Systems",
+      description: "Led development of RAG-based enterprise knowledge platform with 80-90% improved relevance using LangChain, GPT-4, and Qdrant",
+      tech: ["GPT-4", "LangChain", "Qdrant", "FastAPI"]
+    },
+    {
+      icon: <Building className="w-6 h-6" />,
+      title: "Enterprise ERP Solutions",
+      description: "Delivered comprehensive ERP modules for PSU clients serving 5000+ users with 40% reduction in processing time",
+      tech: ["Python", "Frappe", "MariaDB", "GST Compliance"]
+    },
+    {
+      icon: <Database className="w-6 h-6" />,
+      title: "Scalable Backend Systems",
+      description: "Engineered Flask REST APIs handling 10,000+ concurrent users with multithreading and rate-limiting",
+      tech: ["Flask", "FastAPI", "PostgreSQL", "Redis"]
+    },
+    {
+      icon: <Cloud className="w-6 h-6" />,
+      title: "Cloud-Native Architecture",
+      description: "Designed distributed microservices with Docker, Kubernetes, and AWS for enterprise automation",
+      tech: ["Docker", "Kubernetes", "AWS", "Terraform"]
+    }
+  ];
+
+  const currentProjects = [
+    {
+      name: "GenAI Meeting Assistant",
+      status: "In Development",
+      description: "AI-powered meeting platform with transcription, summarization, and automated task generation",
+      tech: ["Next.js 15", "FastAPI", "Whisper API", "GPT-4"]
+    },
+    {
+      name: "Enterprise RAG Search Platform",
+      status: "Deployed",
+      description: "Internal semantic search engine enabling contextual answers from enterprise knowledge bases",
+      tech: ["LangChain", "GPT-4", "Qdrant", "Superset"]
+    }
+  ];
+
+  const achievements = [
+    {
+      icon: <Target className="w-5 h-5" />,
+      title: "Ministry Approval",
+      description: "ERP system approved by Ministry of Jal Shakti, validated through central-level audits"
     },
     {
       icon: <Award className="w-5 h-5" />,
-      label: "Certifications",
-      value: "2+",
+      title: "GeeksforGeeks Rank 2",
+      description: "Achieved top ranking demonstrating exceptional problem-solving skills"
     },
-    { icon: <Star className="w-5 h-5" />, label: "Projects", value: "20+" },
+    {
+      icon: <Zap className="w-5 h-5" />,
+      title: "Process Automation",
+      description: "Reduced manual data entry by 70% through intelligent automation systems"
+    }
   ];
 
   const handleDownload = () => {
     const link = document.createElement("a");
     link.href = "/resume.pdf";
-    link.download = "sonu_kumar.pdf";
+    link.download = "sonu_kumar_resume.pdf";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -54,15 +131,129 @@ export default function ResumeComponent() {
       <div className="px-6 pt-20 mx-auto space-y-8 max-w-7xl lg:px-8 md:space-y-16 md:pt-24 lg:pt-32">
         <div className="max-w-2xl mx-auto lg:mx-0">
           <h2 className="text-3xl font-bold tracking-tight text-zinc-100 sm:text-4xl">
-            My Resume
+            Professional Resume
           </h2>
           <p className="mt-4 text-zinc-400">
-            Download or preview my complete professional resume with detailed experience, skills, and achievements.
+            Senior Software Engineer specializing in AI-integrated enterprise systems, with proven expertise in scalable backend development and cloud-native solutions.
           </p>
         </div>
         <div className="w-full h-px bg-zinc-800" />
 
-        {/* Resume Preview Card using animated Card */}
+        {/* Key Statistics */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {resumeStats.map((stat, index) => (
+            <Card key={index}>
+              <div className="p-6 text-center">
+                <div className="text-blue-400 mb-3 flex justify-center">
+                  {stat.icon}
+                </div>
+                <div className="text-2xl font-bold text-white mb-1">
+                  {stat.value}
+                </div>
+                <div className="text-sm text-gray-300 font-medium mb-1">{stat.label}</div>
+                <div className="text-xs text-gray-500">{stat.description}</div>
+              </div>
+            </Card>
+          ))}
+        </div>
+
+        {/* Key Highlights */}
+        <div className="space-y-6">
+          <h3 className="text-2xl font-bold text-white">Key Expertise & Impact</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {keyHighlights.map((highlight, index) => (
+              <Card key={index}>
+                <div className="p-6">
+                  <div className="flex items-start space-x-4">
+                    <div className="text-blue-400 mt-1">
+                      {highlight.icon}
+                    </div>
+                    <div>
+                      <h4 className="text-lg font-semibold text-white mb-2">
+                        {highlight.title}
+                      </h4>
+                      <p className="text-gray-300 text-sm mb-3 leading-relaxed">
+                        {highlight.description}
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {highlight.tech.map((tech, techIndex) => (
+                          <span
+                            key={techIndex}
+                            className="px-2 py-1 bg-blue-500/20 text-blue-300 text-xs rounded-md"
+                          >
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+
+        {/* Current Projects */}
+        <div className="space-y-6">
+          <h3 className="text-2xl font-bold text-white">Current Projects</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {currentProjects.map((project, index) => (
+              <Card key={index}>
+                <div className="p-6">
+                  <div className="flex items-start justify-between mb-3">
+                    <h4 className="text-lg font-semibold text-white">
+                      {project.name}
+                    </h4>
+                    <span className={`px-2 py-1 text-xs rounded-full ${
+                      project.status === 'In Development' 
+                        ? 'bg-yellow-500/20 text-yellow-300' 
+                        : 'bg-green-500/20 text-green-300'
+                    }`}>
+                      {project.status}
+                    </span>
+                  </div>
+                  <p className="text-gray-300 text-sm mb-3">
+                    {project.description}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {project.tech.map((tech, techIndex) => (
+                      <span
+                        key={techIndex}
+                        className="px-2 py-1 bg-purple-500/20 text-purple-300 text-xs rounded-md"
+                      >
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+
+        {/* Notable Achievements */}
+        <div className="space-y-6">
+          <h3 className="text-2xl font-bold text-white">Notable Achievements</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {achievements.map((achievement, index) => (
+              <Card key={index}>
+                <div className="p-6 text-center">
+                  <div className="text-green-400 mb-3 flex justify-center">
+                    {achievement.icon}
+                  </div>
+                  <h4 className="text-lg font-semibold text-white mb-2">
+                    {achievement.title}
+                  </h4>
+                  <p className="text-gray-300 text-sm">
+                    {achievement.description}
+                  </p>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+
+        {/* Resume Download Section */}
         <div className="relative group max-w-4xl mx-auto">
           <Card>
             <div className="relative p-8">
@@ -73,30 +264,11 @@ export default function ResumeComponent() {
 
               {/* Resume Info */}
               <h3 className="text-2xl font-bold text-white mb-4 text-center">
-                Professional Resume
+                Complete Resume Document
               </h3>
               <p className="text-gray-300 mb-8 max-w-md mx-auto text-center">
-                Comprehensive overview of my professional journey, technical
-                skills, and key achievements in software development.
+                Download the complete PDF resume with detailed work experience, technical skills, project descriptions, and professional accomplishments.
               </p>
-
-              {/* Stats */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                {resumeStats.map((stat, index) => (
-                  <div
-                    key={index}
-                    className="text-center p-4 bg-slate-700/50 rounded-xl"
-                  >
-                    <div className="text-blue-400 mb-2 flex justify-center">
-                      {stat.icon}
-                    </div>
-                    <div className="text-lg font-bold text-white">
-                      {stat.value}
-                    </div>
-                    <div className="text-xs text-gray-400">{stat.label}</div>
-                  </div>
-                ))}
-              </div>
 
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 justify-center">

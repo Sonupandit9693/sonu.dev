@@ -1,17 +1,17 @@
 export interface Experience {
-  id: number;
-  title: string;
-  company: string;
-  location: string;
-  duration: string;
-  type: string;
-  description: string;
-  achievements: string[];
-  technologies: string[];
-  companyLogo: string;
-  color: string;
-  current?: boolean;
-  highlightMetrics?: string[];
+  id: number
+  title: string
+  company: string
+  location: string
+  duration: string
+  type: string
+  description: string
+  achievements: string[]
+  technologies: string[]
+  companyLogo: string
+  color: string
+  current?: boolean
+  highlightMetrics?: string[]
 }
 
 export const experiences: Experience[] = [
@@ -49,17 +49,17 @@ export const experiences: Experience[] = [
       "Apache Superset",
       "Celery",
       "RAG",
-      "Microservices"
+      "Microservices",
     ],
-    companyLogo: "",
+    companyLogo: "🏢",
     color: "from-blue-500 to-cyan-500",
     current: true,
     highlightMetrics: [
       "5,000+ users served",
       "80-90% improved search relevance",
       "70% reduction in manual work",
-      "30% query latency reduction"
-    ]
+      "30% query latency reduction",
+    ],
   },
   {
     id: 2,
@@ -92,16 +92,11 @@ export const experiences: Experience[] = [
       "WhatsApp Business API",
       "Shopify API",
       "Multithreading",
-      "Rate Limiting"
+      "Rate Limiting",
     ],
-    companyLogo: "",
+    companyLogo: "🚀",
     color: "from-purple-500 to-pink-500",
-    highlightMetrics: [
-      "10,000+ concurrent users",
-      "99.9% uptime",
-      "50% latency reduction",
-      "30% faster processing"
-    ]
+    highlightMetrics: ["10,000+ concurrent users", "99.9% uptime", "50% latency reduction", "30% faster processing"],
   },
   {
     id: 3,
@@ -129,17 +124,13 @@ export const experiences: Experience[] = [
       "REST APIs",
       "Git",
       "Database Optimization",
-      "Frontend Development"
+      "Frontend Development",
     ],
-    companyLogo: "",
+    companyLogo: "💡",
     color: "from-green-500 to-emerald-500",
-    highlightMetrics: [
-      "Multiple client projects",
-      "Database query optimization",
-      "Full-stack development"
-    ]
+    highlightMetrics: ["Multiple client projects", "Database query optimization", "Full-stack development"],
   },
-];
+]
 
 // Optional: Add a summary component for key metrics
 export const experienceSummary = {
@@ -149,13 +140,13 @@ export const experienceSummary = {
     "5,000+ enterprise users served",
     "80-90% improvement in search relevance",
     "70% reduction in manual processes",
-    "99.9% system uptime achieved"
+    "99.9% system uptime achieved",
   ],
   coreExpertise: [
     "AI/ML Integration",
     "Backend Architecture",
     "Enterprise Systems",
     "High-Traffic APIs",
-    "Database Optimization"
-  ]
-};
+    "Database Optimization",
+  ],
+}

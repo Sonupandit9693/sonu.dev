@@ -40,9 +40,9 @@ export default function Home() {
         </h1>
         <div className="hidden w-screen h-px animate-glow md:block animate-fade-right bg-gradient-to-r from-zinc-300/0 via-zinc-300/50 to-zinc-300/0" />
 
-        <div className="my-16 text-center animate-fade-in">
+       <div className="my-16 text-center animate-fade-in">
           <h2 className="text-sm text-zinc-500">
-            Software Development Engineer @{" "}
+            Senior Software Engineer @{" "}
             <Link
               target="_blank"
               href="https://www.cyfuture.com/"
@@ -52,18 +52,16 @@ export default function Home() {
             </Link>
             <br />
             <span className="text-zinc-400">
-              Building innovative solutions with a focus on quality and performance.
+              Specializing in AI-integrated enterprise systems and scalable backend solutions.
             </span>
             <br />
-            {/* Uncomment the line below to add a link to unkey.dev */} 
-            {/* <Link
-              target="_blank"
-              href="https://unkey.dev"
-              className="underline duration-500 hover:text-zinc-300"
-            >
-              unkey.dev
-            </Link>{" "} */}
-
+            <span className="text-zinc-400">
+              Currently building an AI Meeting Assistant with Next.js 15, FastAPI, and GPT-4.
+            </span>
+            <br />
+            <span className="text-zinc-300 text-xs mt-2 inline-block">
+              Delivered RAG-based platforms • Served 5000+ users • 99.9% uptime achieved
+            </span>
           </h2>
         </div>
       </div>

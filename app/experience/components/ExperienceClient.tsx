@@ -1,13 +1,13 @@
-"use client";
+"use client"
 
-import ExperienceHeader from "./ExperienceHeader";
-import StatsGrid from "./StatsGrid";
-import ExperienceTimeline from "./ExperienceTimeline";
-import CallToAction from "./CallToAction";
-import { Navigation } from "@/app/components/nav";
+import ExperienceHeader from "./ExperienceHeader"
+import StatsGrid from "./StatsGrid"
+import ExperienceTimeline from "./ExperienceTimeline"
+import CallToAction from "./CallToAction"
+import { Navigation } from "@/app/components/nav"
 
 interface ExperienceClientProps {
-  views: number;
+  views: number
 }
 
 export default function ExperienceClient({ views }: ExperienceClientProps) {
@@ -22,5 +22,5 @@ export default function ExperienceClient({ views }: ExperienceClientProps) {
         <CallToAction />
       </div>
     </div>
-  );
+  )
 }

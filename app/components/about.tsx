@@ -12,7 +12,7 @@ export default function About() {
   const achievements = [
     {
       icon: <Code className="w-4 h-4" />,
-      text: "Senior Software Engineer with 2+ years of experience in AI-integrated enterprise systems"
+      text: "Software Engineer with 2+ years of experience in AI-integrated enterprise systems"
     },
     {
       icon: <Zap className="w-4 h-4" />,
@@ -49,7 +49,7 @@ export default function About() {
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">About Me</h1>
           <p className="text-slate-300 max-w-2xl mx-auto">
-            Senior Software Engineer specializing in AI-integrated enterprise systems and scalable backend solutions
+            Software Engineer specializing in AI-integrated enterprise systems and scalable backend solutions
           </p>
         </div>
 
@@ -58,7 +58,7 @@ export default function About() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
             {/* Image Section */}
             <div className="flex justify-center lg:justify-start">
-              <div className="relative group">
+              <div className="relative group mt-12 ml-7">
                 {/* Animated border */}
                 <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-xl blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-pulse"></div>
 
@@ -67,8 +67,8 @@ export default function About() {
                   <Image
                     src="/profile.jpeg"
                     alt="Sonu Kumar - Senior Software Engineer"
-                    width={300}
-                    height={380}
+                    width={400}
+                    height={400}
                     className="rounded-lg object-cover w-full h-auto"
                     priority
                   />
@@ -84,7 +84,7 @@ export default function About() {
                   Sonu Kumar
                 </h2>
                 <p className="text-base text-slate-300 font-medium leading-snug">
-                  Senior Software Engineer @ Cyfuture India Pvt Ltd
+                  Software Engineer @ Cyfuture India Pvt Ltd
                 </p>
                 <p className="text-sm text-slate-400 leading-relaxed">
                   Specialized in AI/ML integration, FastAPI microservices, and enterprise-scale backend systems
@@ -126,34 +126,31 @@ export default function About() {
                 </div>
               </div>
             </div>
-          </div>         
+          </div>
+
+          {/* Tech Stack Section */}
+          <div className="mt-8 pt-6 border-t border-slate-700/50">
+            <h3 className="text-lg font-semibold text-white mb-4 text-center">Technical Expertise</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {techStack.map((stack, index) => (
+                <div key={index} className="bg-slate-700/30 rounded-lg p-4 border border-slate-600/30">
+                  <h4 className="text-sm font-semibold text-blue-400 mb-2">{stack.category}</h4>
+                  <div className="space-y-1">
+                    {stack.skills.map((skill, skillIndex) => (
+                      <div key={skillIndex} className="text-xs text-slate-300">
+                        {skill}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>
   )
 }
-
- {/* Tech Stack Section */}
-          // <div className="mt-8 pt-6 border-t border-slate-700/50">
-          //   <h3 className="text-lg font-semibold text-white mb-4 text-center">Technical Expertise</h3>
-          //   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          //     {techStack.map((stack, index) => (
-          //       <div key={index} className="bg-slate-700/30 rounded-lg p-4 border border-slate-600/30">
-          //         <h4 className="text-sm font-semibold text-blue-400 mb-2">{stack.category}</h4>
-          //         <div className="space-y-1">
-          //           {stack.skills.map((skill, skillIndex) => (
-          //             <div key={skillIndex} className="text-xs text-slate-300">
-          //               {skill}
-          //             </div>
-          //           ))}
-          //         </div>
-          //       </div>
-          //     ))}
-          //   </div>
-          // </div>
-
-
-
 {/* Additional Stats Section */}
     {/* <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6">
         {[

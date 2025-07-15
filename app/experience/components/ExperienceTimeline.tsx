@@ -1,11 +1,11 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import ExperienceCard from "./ExperienceCard";
-import { experiences } from "../data/experiences";
+import { useState } from "react"
+import ExperienceCard from "./ExperienceCard"
+import { experiences } from "../data/experiences"
 
 export default function ExperienceTimeline() {
-  const [activeExperience, setActiveExperience] = useState(0);
+  const [activeExperience, setActiveExperience] = useState(0)
 
   return (
     <div className="relative">
@@ -24,9 +24,7 @@ export default function ExperienceTimeline() {
           >
             {/* Timeline Dot */}
             <div className="absolute left-8 md:left-1/2 transform -translate-x-1/2 w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full border-4 border-slate-900 z-10 flex items-center justify-center">
-              {exp.current && (
-                <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-              )}
+              {exp.current && <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>}
             </div>
 
             <ExperienceCard exp={exp} index={index} />
@@ -34,5 +32,5 @@ export default function ExperienceTimeline() {
         ))}
       </div>
     </div>
-  );
+  )
 }
