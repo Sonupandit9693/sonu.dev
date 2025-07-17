@@ -12,34 +12,34 @@ export default function About() {
   const achievements = [
     {
       icon: <Code className="w-4 h-4" />,
-      text: "Software Engineer with 2+ years of experience in AI-integrated enterprise systems"
+      text: "Software Engineer with 2+ years of experience in enterprise-scale AI systems"
     },
     {
       icon: <Zap className="w-4 h-4" />,
-      text: "Led development of RAG-based enterprise knowledge platform with 80-90% improved relevance"
+      text: "Led development of RAG-based enterprise knowledge platform using LangChain and Qdrant"
     },
     {
       icon: <Users className="w-4 h-4" />,
-      text: "Delivered ERP modules for 5000+ users at Public Sector Undertaking (PSU) clients"
+      text: "Delivered ERP solutions for 4,000+ users at government PSU clients"
     },
     {
       icon: <Award className="w-4 h-4" />,
-      text: "Bachelor in Computer Science from Maharishi Dayanand University (GPA: 8.6/10)"
+      text: "Bachelor of Vocation in Software Development from Maharshi Dayanand University (GPA: 8.6/10)"
     }
   ]
 
   const techStack = [
-    { category: "Languages", skills: ["Python", "JavaScript", "TypeScript", "SQL"] },
-    { category: "Frameworks", skills: ["FastAPI", "Flask", "Django", "Next.js"] },
-    { category: "AI/ML", skills: ["GPT-4", "LangChain", "AutoGen", "Whisper API"] },
-    { category: "Cloud & DevOps", skills: ["Docker", "AWS", "Kubernetes", "CI/CD"] }
+    { category: "Languages", skills: ["Python", "JavaScript", "SQL"] },
+    { category: "Frameworks", skills: ["FastAPI", "Flask", "React.js", "LangChain"] },
+    { category: "AI/LLM", skills: ["LLM APIs", "RAG Systems", "OpenCV", "Multi-agent Workflows"] },
+    { category: "Databases", skills: ["MariaDB", "PostgreSQL", "Qdrant", "Redis"] }
   ]
 
   const highlights = [
-    { number: "440+", label: "LeetCode Problems Solved" },
-    { number: "99.9%", label: "System Uptime Achieved" },
-    { number: "5000+", label: "Users Served" },
-    { number: "70%", label: "Process Automation Improvement" }
+    { number: "340+", label: "LeetCode Problems Solved" },
+    { number: "4,000+", label: "Users Served" },
+    { number: "1.5+", label: "Years Experience" },
+    { number: "RAG", label: "Systems Architect" }
   ]
 
   return (
@@ -49,7 +49,7 @@ export default function About() {
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">About Me</h1>
           <p className="text-slate-300 max-w-2xl mx-auto">
-            Software Engineer specializing in AI-integrated enterprise systems and scalable backend solutions
+            Software Engineer specializing in enterprise-scale AI systems and ERP solutions for government PSU clients
           </p>
         </div>
 
@@ -66,7 +66,7 @@ export default function About() {
                 <div className="relative bg-slate-800 rounded-xl p-2">
                   <Image
                     src="/profile.jpeg"
-                    alt="Sonu Kumar - Senior Software Engineer"
+                    alt="Sonu Kumar - Software Engineer"
                     width={400}
                     height={400}
                     className="rounded-lg object-cover w-full h-auto"
@@ -87,7 +87,7 @@ export default function About() {
                   Software Engineer @ Cyfuture India Pvt Ltd
                 </p>
                 <p className="text-sm text-slate-400 leading-relaxed">
-                  Specialized in AI/ML integration, FastAPI microservices, and enterprise-scale backend systems
+                  Specialized in RAG-based knowledge platforms, FastAPI microservices, and ERP system integration
                 </p>
               </div>
 
@@ -146,26 +146,21 @@ export default function About() {
               ))}
             </div>
           </div>
+
+          {/* Highlights Section */}
+          {/* <div className="mt-8 pt-6 border-t border-slate-700/50">
+            <h3 className="text-lg font-semibold text-white mb-4 text-center">Key Highlights</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {highlights.map((highlight, index) => (
+                <div key={index} className="text-center p-4 bg-slate-700/30 rounded-lg border border-slate-600/30">
+                  <div className="text-lg md:text-xl font-bold text-white mb-1">{highlight.number}</div>
+                  <div className="text-xs text-slate-400">{highlight.label}</div>
+                </div>
+              ))}
+            </div> */}
+          {/* </div> */}
         </div>
       </div>
     </section>
   )
 }
-{/* Additional Stats Section */}
-    {/* <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6">
-        {[
-        { number: "100k+", label: "Followers", icon: "👥" },
-        { number: "5+", label: "Years Experience", icon: "💼" },
-        { number: "50+", label: "Projects", icon: "🚀" },
-        { number: "10+", label: "Companies", icon: "🏢" },
-        ].map((stat, index) => (
-        <div
-            key={index}
-            className="text-center p-6 bg-slate-800/30 backdrop-blur-sm rounded-2xl border border-slate-700/30 hover:bg-slate-700/30 transition-all duration-300 hover:scale-105"
-        >
-            <div className="text-3xl mb-2">{stat.icon}</div>
-            <div className="text-2xl md:text-3xl font-bold text-white mb-1">{stat.number}</div>
-            <div className="text-slate-400 text-sm">{stat.label}</div>
-        </div>
-        ))}
-    </div> */}

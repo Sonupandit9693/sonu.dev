@@ -42,7 +42,7 @@ export default function Home() {
 
        <div className="my-16 text-center animate-fade-in">
           <h2 className="text-sm text-zinc-500">
-            Senior Software Engineer @{" "}
+            Software Engineer @{" "}
             <Link
               target="_blank"
               href="https://www.cyfuture.com/"
@@ -52,15 +52,15 @@ export default function Home() {
             </Link>
             <br />
             <span className="text-zinc-400">
-              Specializing in AI-integrated enterprise systems and scalable backend solutions.
+              Building enterprise-scale AI systems and ERP solutions for government PSU clients.
             </span>
             <br />
             <span className="text-zinc-400">
-              Currently building an AI Meeting Assistant with Next.js 15, FastAPI, and GPT-4.
+              Specializing in RAG-based knowledge platforms, FastAPI microservices, and LLM integration.
             </span>
             <br />
             <span className="text-zinc-300 text-xs mt-2 inline-block">
-              Delivered RAG-based platforms • Served 5000+ users • 99.9% uptime achieved
+              Served 4,000+ users • RAG systems architect • 340+ LeetCode problems solved
             </span>
           </h2>
         </div>

@@ -33,7 +33,7 @@ export default function ResumeComponent() {
     {
       icon: <Users className="w-5 h-5" />,
       label: "Users Served",
-      value: "5000+",
+      value: "4000+",
       description: "Enterprise applications"
     },
     {
@@ -54,8 +54,8 @@ export default function ResumeComponent() {
     {
       icon: <Bot className="w-6 h-6" />,
       title: "AI-Integrated Systems",
-      description: "Led development of RAG-based enterprise knowledge platform with 80-90% improved relevance using LangChain, GPT-4, and Qdrant",
-      tech: ["GPT-4", "LangChain", "Qdrant", "FastAPI"]
+      description: "Led development of RAG-based enterprise knowledge platform with 80-90% improved relevance using LangChain, LLMS Models, and Vector Database",
+      tech: ["LLM Models", "LangChain", "Vector Database", "FastAPI"]
     },
     {
       icon: <Building className="w-6 h-6" />,
@@ -88,7 +88,7 @@ export default function ResumeComponent() {
       name: "Enterprise RAG Search Platform",
       status: "Deployed",
       description: "Internal semantic search engine enabling contextual answers from enterprise knowledge bases",
-      tech: ["LangChain", "GPT-4", "Qdrant", "Superset"]
+      tech: ["LangChain", "LLM Models", "Vector Database", "Superset"]
     }
   ];
 

@@ -1,57 +1,60 @@
-import { Briefcase, Users, TrendingUp, Code, Award, Zap } from "lucide-react"
-import { Card } from "@/app/components/card"
+import { Users, Code, Award, Zap } from "lucide-react"
 
 const stats = [
   {
-    icon: <Briefcase className="w-5 h-5" />,
-    label: "Years Experience",
-    value: "2+",
-    description: "Production-grade systems",
+    name: "Enterprise Users Served",
+    value: "4,000+",
+    icon: Users,
+    description: "Government PSU clients",
+    color: "from-blue-500 to-cyan-500",
   },
   {
-    icon: <Users className="w-5 h-5" />,
-    label: "Users Served",
-    value: "15,000+",
-    description: "Enterprise applications",
+    name: "LeetCode Problems",
+    value: "340+",
+    icon: Code,
+    description: "Data Structures & Algorithms",
+    color: "from-green-500 to-emerald-500",
   },
   {
-    icon: <TrendingUp className="w-5 h-5" />,
-    label: "System Uptime",
-    value: "99.9%",
-    description: "High availability",
+    name: "Years Experience",
+    value: "1.5+",
+    icon: Award,
+    description: "Enterprise development",
+    color: "from-purple-500 to-pink-500",
   },
   {
-    icon: <Code className="w-5 h-5" />,
-    label: "Projects Delivered",
+    name: "Core Technologies",
     value: "15+",
-    description: "Enterprise solutions",
-  },
-  {
-    icon: <Award className="w-5 h-5" />,
-    label: "Performance Boost",
-    value: "80%",
-    description: "Search relevance improvement",
-  },
-  {
-    icon: <Zap className="w-5 h-5" />,
-    label: "Process Automation",
-    value: "70%",
-    description: "Manual work reduction",
+    icon: Zap,
+    description: "AI, Backend, Frontend",
+    color: "from-orange-500 to-red-500",
   },
 ]
 
 export default function StatsGrid() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {stats.map((stat, index) => (
-        <Card key={index}>
-          <div className="p-6 text-center">
-            <div className="text-blue-400 mb-3 flex justify-center">{stat.icon}</div>
+        <div
+          key={stat.name}
+          className="group relative overflow-hidden rounded-2xl bg-slate-800/50 p-6 backdrop-blur-sm border border-slate-700/50 hover:border-slate-600/50 transition-all duration-300"
+        >
+          {/* Animated background */}
+          <div className={`absolute inset-0 bg-gradient-to-r ${stat.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
+          
+          {/* Content */}
+          <div className="relative">
+            <div className="flex items-center space-x-2 mb-2">
+              <div className={`p-2 rounded-lg bg-gradient-to-r ${stat.color} bg-opacity-20`}>
+                <stat.icon className="w-5 h-5 text-white" />
+              </div>
+            </div>
+            
             <div className="text-2xl font-bold text-white mb-1">{stat.value}</div>
-            <div className="text-sm text-gray-300 font-medium mb-1">{stat.label}</div>
-            <div className="text-xs text-gray-500">{stat.description}</div>
+            <div className="text-sm font-medium text-gray-300 mb-1">{stat.name}</div>
+            <div className="text-xs text-gray-400">{stat.description}</div>
           </div>
-        </Card>
+        </div>
       ))}
     </div>
   )
