@@ -2,6 +2,7 @@
 import { ArrowLeft, Menu, X } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
+import UserProfile from "./UserProfile";
 
 export const Navigation: React.FC = () => {
 	const ref = useRef<HTMLElement>(null);
@@ -21,7 +22,7 @@ export const Navigation: React.FC = () => {
 	const navLinks = [
 		{ href: "/experience", label: "Experience" },
 		{ href: "/projects", label: "Projects" },
-		// { href: "/blogs", label: "Blogs" },
+		{ href: "/blogs", label: "Blogs" },
 		{ href: "/contact", label: "Contact" },
 		{ href: "/skills", label: "Technical Skills" },
 		{ href: "/resume", label: "Resume" }
@@ -46,7 +47,7 @@ export const Navigation: React.FC = () => {
 					</Link>
 
 					{/* Desktop Links */}
-					<div className="hidden md:flex gap-8">
+					<div className="hidden md:flex gap-8 items-center">
 						{navLinks.map((link) => (
 							<Link
 								key={link.href}
@@ -56,15 +57,19 @@ export const Navigation: React.FC = () => {
 								{link.label}
 							</Link>
 						))}
+						<UserProfile />
 					</div>
 
-					{/* Mobile Menu Button */}
-					<button
-						className="md:hidden text-zinc-400 hover:text-zinc-100"
-						onClick={() => setMenuOpen(!menuOpen)}
-					>
-						{menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-					</button>
+					{/* Mobile Menu Button & Profile */}
+					<div className="flex items-center gap-4 md:hidden">
+						<UserProfile />
+						<button
+							className="text-zinc-400 hover:text-zinc-100"
+							onClick={() => setMenuOpen(!menuOpen)}
+						>
+							{menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+						</button>
+					</div>
 				</div>
 
 				{/* Mobile Dropdown Menu */}
