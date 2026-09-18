@@ -6,6 +6,7 @@ import { useRouter, usePathname, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { Heart, MessageCircle, Eye, Calendar, User, Trash2, Edit2, X } from "lucide-react"
 import AuthModal from "../../components/AuthModal"
+import CommentSection from "../components/CommentSection"
 
 interface Post {
   id: string
@@ -42,23 +43,42 @@ interface Post {
   userLiked: boolean
 }
 
+// Helper function to convert YouTube URL to embed format
+const getEmbedUrl = (url: string): string => {
+  if (!url) return url
+
+  // Handle youtube.com/watch?v=VIDEO_ID format
+  const watchMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/)
+  if (watchMatch) {
+    return `https://www.youtube.com/embed/${watchMatch[1]}`
+  }
+
+  // Handle youtube.com/embed/VIDEO_ID format (already correct)
+  if (url.includes('youtube.com/embed/')) {
+    return url
+  }
+
+  // Handle youtu.be/VIDEO_ID format
+  const shortMatch = url.match(/youtu\.be\/([a-zA-Z0-9_-]+)/)
+  if (shortMatch) {
+    return `https://www.youtube.com/embed/${shortMatch[1]}`
+  }
+
+  // Return original URL if no YouTube pattern matched
+  return url
+}
+
 export default function BlogDetail() {
   const { data: session } = useSession()
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
-  const slug = pathname.split("/").pop()
+  const slug = pathname?.split("/").pop()
 
   const [post, setPost] = useState<Post | null>(null)
   const [loading, setLoading] = useState(true)
   const [showAuthModal, setShowAuthModal] = useState(false)
   const [authMode, setAuthMode] = useState<"signin" | "signup">("signup")
-  const [commentContent, setCommentContent] = useState("")
-  const [isEditing, setIsEditing] = useState(false)
-  const [editContent, setEditContent] = useState("")
-  const [editingCommentId, setEditingCommentId] = useState<string | null>(null)
-  const [isDeleting, setIsDeleting] = useState(false)
-  const [commentToDelete, setCommentToDelete] = useState<string | null>(null)
 
   useEffect(() => {
     if (!slug) {
@@ -130,81 +150,6 @@ export default function BlogDetail() {
     }
   }
 
-  const handleCommentSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!commentContent.trim() || !session?.user?.id) return
-
-    try {
-      const response = await fetch(`/api/posts/${slug}/comments`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content: commentContent })
-      })
-
-      if (response.ok) {
-        setCommentContent("")
-        await fetchPost()
-      }
-    } catch (error) {
-      console.error("Error creating comment:", error)
-    }
-  }
-
-  const handleEditComment = async (commentId: string, content: string) => {
-    setEditingCommentId(commentId)
-    setEditContent(content)
-    setIsEditing(true)
-  }
-
-  const handleSaveEdit = async () => {
-    if (!editingCommentId || !editContent.trim() || !session?.user?.id) return
-
-    try {
-      const response = await fetch(`/api/posts/${slug}/comments/${editingCommentId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content: editContent })
-      })
-
-      if (response.ok) {
-        setIsEditing(false)
-        setEditingCommentId(null)
-        setEditContent("")
-        await fetchPost()
-      }
-    } catch (error) {
-      console.error("Error updating comment:", error)
-    }
-  }
-
-  const handleDeleteComment = async (commentId: string) => {
-    if (!session?.user?.id) return
-
-    setIsDeleting(true)
-    setCommentToDelete(commentId)
-
-    try {
-      const response = await fetch(`/api/posts/${slug}/comments/${commentId}`, {
-        method: "DELETE"
-      })
-
-      if (response.ok) {
-        setIsDeleting(false)
-        setCommentToDelete(null)
-        await fetchPost()
-      }
-    } catch (error) {
-      console.error("Error deleting comment:", error)
-      setIsDeleting(false)
-      setCommentToDelete(null)
-    }
-  }
-
-  const confirmDelete = (commentId: string) => {
-    if (window.confirm("Are you sure you want to delete this comment?")) {
-      handleDeleteComment(commentId)
-    }
-  }
 
   if (loading) {
     return (
@@ -221,8 +166,6 @@ export default function BlogDetail() {
       </div>
     )
   }
-
-  const canEdit = session?.user?.id === post.author.id;
 
   return (
     <div className="container mx-auto px-6 py-24">
@@ -251,197 +194,242 @@ export default function BlogDetail() {
           )}
 
           <div className="p-8">
-            <h1 className="text-3xl font-bold text-white mb-6">{post.title}</h1>
+            <h1 className="text-5xl font-bold text-white mb-4 leading-tight">{post.title}</h1>
+
+            {/* Metadata Section */}
+            <div className="flex flex-wrap items-center gap-6 text-sm text-zinc-400 mb-8 pb-6 border-b border-zinc-800">
+              <div className="flex items-center gap-2">
+                <img
+                  src={post.author.image || `https://ui-avatars.com/api/?name=${post.author.name || 'Author'}`}
+                  alt={post.author.name || 'Author'}
+                  className="w-8 h-8 rounded-full"
+                />
+                <span className="font-medium text-white">{post.author.name || post.author.email?.split('@')[0] || 'Anonymous'}</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <Calendar size={16} />
+                {formatDate(post.createdAt)}
+              </div>
+              <div className="flex items-center gap-1">
+                <Eye size={16} />
+                {post.views.toLocaleString()} views
+              </div>
+              <div className="flex items-center gap-1">
+                <MessageCircle size={16} />
+                {post.comments.length} {post.comments.length === 1 ? 'comment' : 'comments'}
+              </div>
+            </div>
 
             {post.videoUrl && (
-              <div className="mb-8">
-                <div className="aspect-video bg-zinc-800 overflow-hidden">
+              <div className="mb-12">
+                <h2 className="text-xl font-semibold text-white mb-4">Demo Video</h2>
+                <div className="aspect-video bg-zinc-800 overflow-hidden rounded-lg border border-zinc-800 shadow-2xl">
                   <iframe
-                    src={post.videoUrl}
+                    src={getEmbedUrl(post.videoUrl)}
                     title="Demo Video"
                     className="w-full h-full"
                     allowFullScreen
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   />
                 </div>
               </div>
             )}
 
-            <div className="prose prose-lg text-zinc-300 max-w-none">
-              {post.content.split('\n\n').map((paragraph, index) => (
-                <p key={index} className="mb-6">{paragraph}</p>
-              ))}
+            {/* Main Content */}
+            <div className="prose prose-invert max-w-none mb-12">
+              <style jsx>{`
+                .prose {
+                  --tw-prose-body: rgb(212 212 212);
+                  --tw-prose-headings: rgb(255 255 255);
+                  --tw-prose-lead: rgb(161 161 170);
+                  --tw-prose-links: rgb(255 255 255);
+                  --tw-prose-bold: rgb(255 255 255);
+                  --tw-prose-counters: rgb(161 161 170);
+                  --tw-prose-bullets: rgb(113 113 122);
+                  --tw-prose-hr: rgb(39 39 42);
+                  --tw-prose-quotes: rgb(161 161 170);
+                  --tw-prose-quote-borders: rgb(63 63 70);
+                  --tw-prose-captions: rgb(161 161 170);
+                  --tw-prose-kbd: rgb(255 255 255);
+                  --tw-prose-kbd-shadows: rgb(24 24 27 / 0.1);
+                  --tw-prose-code: rgb(248 113 113);
+                  --tw-prose-pre-bg: rgb(24 24 27);
+                  --tw-prose-pre-code: rgb(212 212 212);
+                }
+
+                .prose h1, .prose h2, .prose h3, .prose h4 {
+                  margin-top: 1.5em;
+                  margin-bottom: 0.75em;
+                  font-weight: 700;
+                  line-height: 1.25;
+                }
+
+                .prose h1 {
+                  font-size: 2.25em;
+                }
+
+                .prose h2 {
+                  font-size: 1.875em;
+                }
+
+                .prose h3 {
+                  font-size: 1.5em;
+                }
+
+                .prose p {
+                  margin-bottom: 1.25em;
+                  line-height: 1.75;
+                }
+
+                .prose ul, .prose ol {
+                  margin: 1.25em 0;
+                  padding-left: 1.625em;
+                }
+
+                .prose li {
+                  margin: 0.5em 0;
+                  line-height: 1.75;
+                }
+
+                .prose code {
+                  background-color: rgb(39 39 42);
+                  padding: 0.2em 0.4em;
+                  border-radius: 0.25em;
+                  font-size: 0.9em;
+                  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+                }
+
+                .prose pre {
+                  background-color: rgb(24 24 27);
+                  padding: 1.25em;
+                  border-radius: 0.5em;
+                  overflow-x: auto;
+                  border: 1px solid rgb(63 63 70);
+                  margin: 1.25em 0;
+                }
+
+                .prose pre code {
+                  background-color: transparent;
+                  padding: 0;
+                  color: rgb(212 212 212);
+                  font-size: 0.875em;
+                }
+
+                .prose blockquote {
+                  border-left: 4px solid rgb(113 113 122);
+                  padding-left: 1.25em;
+                  color: rgb(161 161 170);
+                  font-style: italic;
+                  margin: 1.5em 0;
+                }
+
+                .prose a {
+                  color: rgb(255 255 255);
+                  text-decoration: underline;
+                  text-decoration-color: rgb(113 113 122);
+                  transition: all 0.2s;
+                }
+
+                .prose a:hover {
+                  color: rgb(212 212 212);
+                  text-decoration-color: rgb(212 212 212);
+                }
+
+                .prose hr {
+                  border-color: rgb(39 39 42);
+                  margin: 2em 0;
+                }
+
+                .prose table {
+                  width: 100%;
+                  border-collapse: collapse;
+                  margin: 1.5em 0;
+                }
+
+                .prose th {
+                  background-color: rgb(39 39 42);
+                  padding: 0.75em;
+                  text-align: left;
+                  font-weight: 600;
+                }
+
+                .prose td {
+                  border-bottom: 1px solid rgb(39 39 42);
+                  padding: 0.75em;
+                }
+              `}</style>
+              {post.content.split('\n\n').map((paragraph, index) => {
+                // Handle headings
+                if (paragraph.startsWith('# ')) {
+                  return <h1 key={index}>{paragraph.replace('# ', '')}</h1>
+                }
+                if (paragraph.startsWith('## ')) {
+                  return <h2 key={index}>{paragraph.replace('## ', '')}</h2>
+                }
+                if (paragraph.startsWith('### ')) {
+                  return <h3 key={index}>{paragraph.replace('### ', '')}</h3>
+                }
+                // Handle code blocks
+                if (paragraph.startsWith('```')) {
+                  const codeContent = paragraph.replace(/```/g, '').trim()
+                  return <pre key={index}><code>{codeContent}</code></pre>
+                }
+                // Handle quotes
+                if (paragraph.startsWith('> ')) {
+                  return <blockquote key={index}>{paragraph.replace('> ', '')}</blockquote>
+                }
+                // Handle lists
+                if (paragraph.startsWith('- ')) {
+                  const items = paragraph.split('\n').filter(line => line.startsWith('- '))
+                  return (
+                    <ul key={index}>
+                      {items.map((item, i) => (
+                        <li key={i}>{item.replace('- ', '')}</li>
+                      ))}
+                    </ul>
+                  )
+                }
+                // Handle ordered lists
+                if (paragraph.match(/^\d+\. /)) {
+                  const items = paragraph.split('\n').filter(line => line.match(/^\d+\. /))
+                  return (
+                    <ol key={index}>
+                      {items.map((item, i) => (
+                        <li key={i}>{item.replace(/^\d+\. /, '')}</li>
+                      ))}
+                    </ol>
+                  )
+                }
+                // Regular paragraph
+                return <p key={index}>{paragraph}</p>
+              })}
             </div>
 
-            <div className="mt-10 pt-6 border-t border-zinc-800">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div className="flex items-center gap-4 text-sm text-zinc-500">
-                  <div className="flex items-center gap-1">
-                    <Calendar size={14} />
-                    {formatDate(post.createdAt)}
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <User size={14} />
-                    {post.author.name || post.author.email?.split('@')[0] || 'Anonymous'}
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Eye size={14} />
-                    {post.views} views
-                  </div>
-                </div>
-
-                {session && (
-                  <div className="flex items-center gap-4">
-                    <button
-                      onClick={toggleLike}
-                      className={`flex items-center gap-2 text-sm ${post.userLiked ? 'text-red-500' : 'text-zinc-500'} hover:text-zinc-300 transition-colors`}
-                    >
-                      <Heart size={18} />
-                      <span>{post._count.likes}</span>
-                    </button>
-
-                    <button
-                      onClick={() => setShowAuthModal(true)}
-                      className="flex items-center gap-2 text-sm text-zinc-500 hover:text-zinc-300 transition-colors"
-                    >
-                      <MessageCircle size={18} />
-                      <span>{post.comments.length} comments</span>
-                    </button>
-                  </div>
-                )}
-
-                {canEdit && (
-                  <div className="flex items-center gap-2">
-                    <Link
-                      href={`/blogs/edit/${post.slug}`}
-                      className="text-sm text-zinc-400 hover:text-zinc-300 transition-colors"
-                    >
-                      <Edit2 size={18} />
-                    </Link>
-
-                    <button
-                      onClick={() =>
-                        window.confirm("Delete this post?") &&
-                        fetch(`/api/posts/${post.id}`, { method: "DELETE" })
-                          .then(() => router.push("/blogs"))
-                      }
-                      className="text-sm text-red-500 hover:text-red-300 transition-colors"
-                    >
-                      <Trash2 size={18} />
-                    </button>
+            {/* Engagement Section */}
+            <div className="py-8 border-t border-b border-zinc-800 mb-8">
+              <div className="flex items-center gap-6">
+                {session ? (
+                  <button
+                    onClick={toggleLike}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${post.userLiked
+                        ? 'bg-red-500/20 text-red-400'
+                        : 'bg-zinc-800/50 text-zinc-400 hover:text-white hover:bg-zinc-800'
+                      }`}
+                  >
+                    <Heart size={20} fill={post.userLiked ? 'currentColor' : 'none'} />
+                    <span className="font-medium">{post._count.likes}</span>
+                  </button>
+                ) : (
+                  <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-zinc-800/50 text-zinc-400">
+                    <Heart size={20} />
+                    <span className="font-medium">{post._count.likes}</span>
                   </div>
                 )}
               </div>
             </div>
 
-            {session && (
-              <div className="mt-8 pt-6 border-t border-zinc-800">
-                <h2 className="text-xl font-bold text-white mb-4">Comments ({post.comments.length})</h2>
-
-                <form onSubmit={handleCommentSubmit} className="mb-6">
-                  <div className="flex gap-3">
-                    <textarea
-                      value={commentContent}
-                      onChange={(e) => setCommentContent(e.target.value)}
-                      placeholder="Write a comment..."
-                      className="flex-1 min-h-[80px] resize-y bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-zinc-500"
-                      required
-                    />
-                    <button
-                      type="submit"
-                      disabled={!commentContent.trim()}
-                      className="px-4 py-2 bg-white text-zinc-900 font-medium rounded-lg hover:bg-zinc-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      Post
-                    </button>
-                  </div>
-                </form>
-
-                {post.comments.map((comment) => (
-                  <div key={comment.id} className="flex gap-4 mb-6 pb-4 border-b border-zinc-800 last:mb-0 last:pb-0 last:border-0">
-                    <div className="flex-shrink-0">
-                      {comment.user.image ? (
-                        <img
-                          src={comment.user.image}
-                          alt={comment.user.name || "User"}
-                          className="w-10 h-10 rounded-full"
-                        />
-                      ) : (
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-zinc-600 to-zinc-800 flex items-center justify-center text-white font-medium text-sm">
-                          {(comment.user.name || comment.user.email?.charAt(0) || "U").toUpperCase()}
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="flex-1">
-                      {isEditing && editingCommentId === comment.id ? (
-                        <div className="mb-2">
-                          <textarea
-                            value={editContent}
-                            onChange={(e) => setEditContent(e.target.value)}
-                            className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-zinc-500"
-                          />
-                          <div className="flex justify-end mt-2 gap-2">
-                            <button
-                              onClick={handleSaveEdit}
-                              className="px-3 py-1 bg-white text-zinc-900 text-sm rounded-md hover:bg-zinc-200"
-                            >
-                              Save
-                            </button>
-                            <button
-                              onClick={() => {
-                                setIsEditing(false)
-                                setEditingCommentId(null)
-                                setEditContent("")
-                              }}
-                              className="px-3 py-1 text-zinc-500 text-sm hover:text-zinc-300"
-                            >
-                              Cancel
-                            </button>
-                          </div>
-                        </div>
-                      ) : (
-                        <div>
-                          <div className="flex items-center justify-between mb-2">
-                            <div className="font-medium text-white text-sm">
-                              {comment.user.name || comment.user.email?.split('@')[0] || 'Anonymous'}
-                            </div>
-                          </div>
-                          <p className="text-zinc-300 whitespace-pre-wrap">{comment.content}</p>
-                          <div className="mt-2 flex items-center gap-4 text-xs text-zinc-500">
-                            <div className="flex items-center gap-1">
-                              <Calendar size={12} />
-                              {timeAgo(comment.createdAt)}
-                            </div>
-                            <div className="flex items-center gap-1">
-                              {session?.user?.id === comment.user.id && (
-                                <>
-                                  <button
-                                    onClick={() => handleEditComment(comment.id, comment.content)}
-                                    className="text-zinc-400 hover:text-zinc-300 underline"
-                                  >
-                                    Edit
-                                  </button>
-                                  <button
-                                    onClick={() => confirmDelete(comment.id)}
-                                    className="ml-2 text-red-500 hover:text-red-300 underline"
-                                  >
-                                    Delete
-                                  </button>
-                                </>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))}
-
-                {post.comments.length === 0 && (
-                  <p className="text-zinc-500 text-center py-6">No comments yet. Be the first to comment!</p>
-                )}
-              </div>
-            )}
+            {/* Comment Section */}
+            <CommentSection slug={slug} initialComments={post.comments} />
           </div>
         </article>
       </div>
