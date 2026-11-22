@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "fmt": "pnpm rome check . --apply-unsafe && pnpm rome format . --write",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:integration": "RUN_INTEGRATION=1 vitest run tests/integration"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1141.0",

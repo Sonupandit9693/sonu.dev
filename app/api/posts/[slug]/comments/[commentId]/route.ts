@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { publicCommentSelect } from "@/lib/public-fields"
+import { parseCommentContent, readJsonObject } from "@/lib/validation"
 
 // PUT - Update comment (requires auth and ownership)
 export async function PUT(
@@ -16,14 +17,10 @@ export async function PUT(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const body = await request.json()
-    const { content } = body
-
-    if (!content || content.trim().length === 0) {
-      return NextResponse.json(
-        { error: "Comment content is required" },
-        { status: 400 }
-      )
+    const body = await readJsonObject(request)
+    const content = parseCommentContent(body?.content)
+    if (!content.ok) {
+      return NextResponse.json({ error: content.error }, { status: 400 })
     }
 
     // Check if comment exists and user owns it
@@ -41,7 +38,7 @@ export async function PUT(
 
     const comment = await prisma.comment.update({
       where: { id: params.commentId },
-      data: { content },
+      data: { content: content.value },
       select: publicCommentSelect,
     })
 

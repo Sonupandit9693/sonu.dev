@@ -9,5 +9,7 @@ export default defineConfig({
   test: {
     environment: "node",
     include: ["tests/**/*.test.{ts,tsx}"],
+    // Pins service env vars to local values and blocks non-local fetches.
+    setupFiles: ["tests/setup/isolate-network.ts"],
   },
 })

@@ -73,6 +73,7 @@ export default function AuthModal({ isOpen, onClose, mode: initialMode, onSucces
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                maxLength={50}
                 className="w-full px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:outline-none focus:border-zinc-500"
                 placeholder="Your name"
               />
@@ -104,6 +105,7 @@ export default function AuthModal({ isOpen, onClose, mode: initialMode, onSucces
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              minLength={mode === "signup" ? 12 : undefined}
               className="w-full px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:outline-none focus:border-zinc-500"
               placeholder="••••••••"
             />
