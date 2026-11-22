@@ -35,7 +35,9 @@ export const authOptions: NextAuthOptions = {
             data: {
               email: credentials.email,
               password: hashedPassword,
-              name: credentials.name || credentials.email.split("@")[0],
+              // Never derive a public display name from the email address.
+              // A blank name is stored as null and shown as "Anonymous".
+              name: credentials.name?.trim() || null,
             }
           })
 
