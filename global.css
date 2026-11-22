@@ -2,9 +2,36 @@
 @tailwind components;
 @tailwind utilities;
 
+.blog-editor.pubwave-editor {
+  min-height: 460px;
+  padding: 1.5rem;
+  border: 1px solid rgb(39 39 42);
+  border-radius: 0.75rem;
+  background: rgb(9 9 11);
+  box-shadow: none;
+}
+
+.blog-editor .pubwave-editor__content {
+  min-height: 400px;
+}
+
+.blog-editor.pubwave-editor [data-placeholder]::before {
+  color: rgb(113 113 122);
+}
+
+@media (max-width: 768px) {
+  .blog-editor.pubwave-editor {
+    min-height: 360px;
+    padding: 1rem;
+  }
+
+  .blog-editor .pubwave-editor__content {
+    min-height: 320px;
+  }
+}
+
 @layer base {
   .text-edge-outline {
     -webkit-text-stroke: 1px rgba(255,255,255,0.3);
   }
 } 
-
