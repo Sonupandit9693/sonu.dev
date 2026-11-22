@@ -22,9 +22,7 @@ interface Post {
   updatedAt: string
   views: number
   author: {
-    id: string
     name: string | null
-    email: string | null
     image: string | null
   }
   comments: Array<{
@@ -34,7 +32,6 @@ interface Post {
     user: {
       id: string
       name: string | null
-      email: string | null
       image: string | null
     }
   }>
@@ -214,7 +211,7 @@ export default function BlogDetail() {
                   alt={post.author.name || 'Author'}
                   className="w-8 h-8 rounded-full"
                 />
-                <span className="font-medium text-white">{post.author.name || post.author.email?.split('@')[0] || 'Anonymous'}</span>
+                <span className="font-medium text-white">{post.author.name || 'Anonymous'}</span>
               </div>
               <div className="flex items-center gap-1">
                 <Calendar size={16} />

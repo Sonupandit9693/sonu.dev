@@ -11,7 +11,6 @@ interface Comment {
   user: {
     id: string
     name: string | null
-    email: string | null
     image: string | null
   }
 }
@@ -164,7 +163,7 @@ export default function CommentSection({ slug, initialComments }: CommentSection
               />
             ) : (
               <div className="w-10 h-10 rounded-full bg-gradient-to-br from-zinc-600 to-zinc-800 flex items-center justify-center text-white font-medium text-sm">
-                {(comment.user.name || comment.user.email?.charAt(0) || "U").toUpperCase()}
+                {(comment.user.name || "U").toUpperCase()}
               </div>
             )}
           </div>
@@ -200,7 +199,7 @@ export default function CommentSection({ slug, initialComments }: CommentSection
               <div>
                 <div className="flex items-center justify-between mb-2">
                   <div className="font-medium text-white text-sm">
-                    {comment.user.name || comment.user.email?.split('@')[0] || 'Anonymous'}
+                    {comment.user.name || 'Anonymous'}
                   </div>
                 </div>
                 <p className="text-zinc-300 whitespace-pre-wrap">{comment.content}</p>

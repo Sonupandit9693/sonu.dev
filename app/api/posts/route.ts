@@ -4,21 +4,16 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { validatePostContent } from "@/lib/blog-content"
 import { prisma } from "@/lib/prisma"
+import { publicAuthorSelect, publicPostSelect } from "@/lib/public-fields"
 
 // GET - Fetch all posts
 export async function GET() {
   try {
     const posts = await prisma.post.findMany({
       where: { published: true },
-      include: {
-        author: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            image: true,
-          }
-        },
+      select: {
+        ...publicPostSelect,
+        author: { select: publicAuthorSelect },
         _count: {
           select: {
             likes: true,
@@ -97,16 +92,10 @@ export async function POST(request: Request) {
         published,
         authorId: session.user.id,
       },
-      include: {
-        author: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            image: true,
-          }
-        }
-      }
+      select: {
+        ...publicPostSelect,
+        author: { select: publicAuthorSelect },
+      },
     })
 
     return NextResponse.json(post, { status: 201 })

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
+import { publicCommentSelect } from "@/lib/public-fields"
 
 // POST - Add comment (requires auth)
 export async function POST(
@@ -39,16 +40,7 @@ export async function POST(
         postId: post.id,
         userId: session.user.id
       },
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            image: true,
-          }
-        }
-      }
+      select: publicCommentSelect,
     })
 
     return NextResponse.json(comment, { status: 201 })

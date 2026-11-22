@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
+import { publicCommentSelect } from "@/lib/public-fields"
 
 // PUT - Update comment (requires auth and ownership)
 export async function PUT(
@@ -41,16 +42,7 @@ export async function PUT(
     const comment = await prisma.comment.update({
       where: { id: params.commentId },
       data: { content },
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            image: true,
-          }
-        }
-      }
+      select: publicCommentSelect,
     })
 
     return NextResponse.json(comment)

@@ -17,7 +17,6 @@ interface Post {
   views: number
   author: {
     name: string | null
-    email: string | null
   }
   _count: {
     likes: number

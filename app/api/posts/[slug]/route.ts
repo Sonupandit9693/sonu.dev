@@ -3,6 +3,11 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { validatePostContent } from "@/lib/blog-content"
 import { prisma } from "@/lib/prisma"
+import {
+  publicAuthorSelect,
+  publicCommentSelect,
+  publicPostSelect,
+} from "@/lib/public-fields"
 
 export async function GET(
   _request: Request,
@@ -11,26 +16,14 @@ export async function GET(
   try {
     const post = await prisma.post.findUnique({
       where: { slug: params.slug },
-      include: {
-        author: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            image: true,
-          },
-        },
+      select: {
+        ...publicPostSelect,
+        // Internal only: used for the draft ownership check below and
+        // stripped before the response is sent.
+        authorId: true,
+        author: { select: publicAuthorSelect },
         comments: {
-          include: {
-            user: {
-              select: {
-                id: true,
-                name: true,
-                email: true,
-                image: true,
-              },
-            },
-          },
+          select: publicCommentSelect,
           orderBy: { createdAt: "desc" },
         },
         _count: { select: { likes: true } },
@@ -66,7 +59,8 @@ export async function GET(
       userLiked = !!like
     }
 
-    return NextResponse.json({ ...post, userLiked })
+    const { authorId: _authorId, ...publicPost } = post
+    return NextResponse.json({ ...publicPost, userLiked })
   } catch (error) {
     console.error("Error fetching post:", error)
     return NextResponse.json({ error: "Failed to fetch post" }, { status: 500 })
