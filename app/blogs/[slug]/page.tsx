@@ -8,6 +8,8 @@ import { Heart, MessageCircle, Eye, Calendar, User, Trash2, Edit2, X } from "luc
 import AuthModal from "../../components/AuthModal"
 import CommentSection from "../components/CommentSection"
 import BlogPostContent from "../components/BlogPostContent"
+import YouTubeEmbed from "../components/YouTubeEmbed"
+import { parseYouTubeId } from "@/lib/video"
 
 interface Post {
   id: string
@@ -39,31 +41,6 @@ interface Post {
     likes: number
   }
   userLiked: boolean
-}
-
-// Helper function to convert YouTube URL to embed format
-const getEmbedUrl = (url: string): string => {
-  if (!url) return url
-
-  // Handle youtube.com/watch?v=VIDEO_ID format
-  const watchMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/)
-  if (watchMatch) {
-    return `https://www.youtube.com/embed/${watchMatch[1]}`
-  }
-
-  // Handle youtube.com/embed/VIDEO_ID format (already correct)
-  if (url.includes('youtube.com/embed/')) {
-    return url
-  }
-
-  // Handle youtu.be/VIDEO_ID format
-  const shortMatch = url.match(/youtu\.be\/([a-zA-Z0-9_-]+)/)
-  if (shortMatch) {
-    return `https://www.youtube.com/embed/${shortMatch[1]}`
-  }
-
-  // Return original URL if no YouTube pattern matched
-  return url
 }
 
 export default function BlogDetail() {
@@ -227,17 +204,11 @@ export default function BlogDetail() {
               </div>
             </div>
 
-            {post.videoUrl && (
+            {parseYouTubeId(post.videoUrl) && (
               <div className="mb-12">
                 <h2 className="text-xl font-semibold text-white mb-4">Demo Video</h2>
                 <div className="aspect-video bg-zinc-800 overflow-hidden rounded-lg border border-zinc-800 shadow-2xl">
-                  <iframe
-                    src={getEmbedUrl(post.videoUrl)}
-                    title="Demo Video"
-                    className="w-full h-full"
-                    allowFullScreen
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  />
+                  <YouTubeEmbed url={post.videoUrl} />
                 </div>
               </div>
             )}

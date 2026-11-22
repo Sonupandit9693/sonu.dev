@@ -4,6 +4,7 @@ import { requireAdmin } from "@/lib/authz"
 import { validatePostContent } from "@/lib/blog-content"
 import { prisma } from "@/lib/prisma"
 import { publicAuthorSelect, publicPostSelect } from "@/lib/public-fields"
+import { parseYouTubeId, youTubeEmbedUrl } from "@/lib/video"
 
 // GET - Fetch all posts
 export async function GET() {
@@ -60,6 +61,20 @@ export async function POST(request: Request) {
       )
     }
 
+    // Only YouTube videos are accepted; store a normalized embed URL built from
+    // the validated video ID, never the submitted string.
+    let embedVideoUrl: string | null = null
+    if (typeof videoUrl === "string" && videoUrl.trim()) {
+      const videoId = parseYouTubeId(videoUrl)
+      if (!videoId) {
+        return NextResponse.json(
+          { error: "Video URL must be a YouTube link (youtube.com or youtu.be)" },
+          { status: 400 }
+        )
+      }
+      embedVideoUrl = youTubeEmbedUrl(videoId)
+    }
+
     const contentError = validatePostContent(content, published)
     if (contentError) {
       return NextResponse.json({ error: contentError }, { status: 400 })
@@ -83,7 +98,7 @@ export async function POST(request: Request) {
         content,
         excerpt: excerpt || null,
         slug,
-        videoUrl: videoUrl || null,
+        videoUrl: embedVideoUrl,
         thumbnail: thumbnail || null,
         published,
         authorId: admin.userId,
