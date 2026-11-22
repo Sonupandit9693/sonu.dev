@@ -10,10 +10,13 @@
     "postinstall": "prisma skills sync || exit 0"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.1141.0",
     "@next/font": "^13.5.4",
     "@next/mdx": "^13.5.4",
+    "@pubwave/editor": "^1.0.0",
     "@upstash/redis": "^1.23.3",
     "bcryptjs": "^3.0.3",
+    "chart.js": "^4.5.1",
     "contentlayer": "^0.3.4",
     "framer-motion": "^10.16.4",
     "lucide-react": "^0.284.0",

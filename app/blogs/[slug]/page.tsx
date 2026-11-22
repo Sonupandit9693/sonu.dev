@@ -7,6 +7,7 @@ import Link from "next/link"
 import { Heart, MessageCircle, Eye, Calendar, User, Trash2, Edit2, X } from "lucide-react"
 import AuthModal from "../../components/AuthModal"
 import CommentSection from "../components/CommentSection"
+import BlogPostContent from "../components/BlogPostContent"
 
 interface Post {
   id: string
@@ -93,10 +94,14 @@ export default function BlogDetail() {
     try {
       setLoading(true)
       const response = await fetch(`/api/posts/${slug}`)
+      if (!response.ok) {
+        throw new Error(response.status === 404 ? "Post not found" : "Failed to load post")
+      }
       const data = await response.json()
       setPost(data)
     } catch (error) {
       console.error("Error fetching post:", error)
+      setPost(null)
       router.push("/blogs")
     } finally {
       setLoading(false)
@@ -194,6 +199,11 @@ export default function BlogDetail() {
           )}
 
           <div className="p-8">
+            {!post.published && (
+              <p className="mb-4 inline-flex rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1 text-sm text-amber-300">
+                Draft preview
+              </p>
+            )}
             <h1 className="text-5xl font-bold text-white mb-4 leading-tight">{post.title}</h1>
 
             {/* Metadata Section */}
@@ -358,58 +368,14 @@ export default function BlogDetail() {
                   padding: 0.75em;
                 }
               `}</style>
-              {post.content.split('\n\n').map((paragraph, index) => {
-                // Handle headings
-                if (paragraph.startsWith('# ')) {
-                  return <h1 key={index}>{paragraph.replace('# ', '')}</h1>
-                }
-                if (paragraph.startsWith('## ')) {
-                  return <h2 key={index}>{paragraph.replace('## ', '')}</h2>
-                }
-                if (paragraph.startsWith('### ')) {
-                  return <h3 key={index}>{paragraph.replace('### ', '')}</h3>
-                }
-                // Handle code blocks
-                if (paragraph.startsWith('```')) {
-                  const codeContent = paragraph.replace(/```/g, '').trim()
-                  return <pre key={index}><code>{codeContent}</code></pre>
-                }
-                // Handle quotes
-                if (paragraph.startsWith('> ')) {
-                  return <blockquote key={index}>{paragraph.replace('> ', '')}</blockquote>
-                }
-                // Handle lists
-                if (paragraph.startsWith('- ')) {
-                  const items = paragraph.split('\n').filter(line => line.startsWith('- '))
-                  return (
-                    <ul key={index}>
-                      {items.map((item, i) => (
-                        <li key={i}>{item.replace('- ', '')}</li>
-                      ))}
-                    </ul>
-                  )
-                }
-                // Handle ordered lists
-                if (paragraph.match(/^\d+\. /)) {
-                  const items = paragraph.split('\n').filter(line => line.match(/^\d+\. /))
-                  return (
-                    <ol key={index}>
-                      {items.map((item, i) => (
-                        <li key={i}>{item.replace(/^\d+\. /, '')}</li>
-                      ))}
-                    </ol>
-                  )
-                }
-                // Regular paragraph
-                return <p key={index}>{paragraph}</p>
-              })}
+              <BlogPostContent content={post.content} />
             </div>
 
-            {/* Engagement Section */}
-            <div className="py-8 border-t border-b border-zinc-800 mb-8">
+            {post.published && <div className="py-8 border-t border-b border-zinc-800 mb-8">
               <div className="flex items-center gap-6">
                 {session ? (
                   <button
+                    type="button"
                     onClick={toggleLike}
                     className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${post.userLiked
                         ? 'bg-red-500/20 text-red-400'
@@ -426,10 +392,9 @@ export default function BlogDetail() {
                   </div>
                 )}
               </div>
-            </div>
+            </div>}
 
-            {/* Comment Section */}
-            <CommentSection slug={slug} initialComments={post.comments} />
+            {post.published && <CommentSection slug={slug ?? ""} initialComments={post.comments} />}
           </div>
         </article>
       </div>

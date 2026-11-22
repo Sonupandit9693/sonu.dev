@@ -27,6 +27,19 @@ pnpm install
 pnpm dev
 ```
 
+## Blog editor image storage
+
+The blog editor uploads banner and inline images through the authenticated `/api/upload` route. Configure an S3 bucket in `.env` before uploading:
+
+```dotenv
+S3_REGION="your-region"
+S3_BUCKET="your-bucket"
+S3_ACCESS_KEY="your-access-key"
+S3_ACCESS_SECRET_KEY="your-secret-key"
+```
+
+The access key variables may be omitted when the server runs with an AWS IAM role. Use credentials restricted to the configured bucket, and keep real credentials out of source control. Uploaded image URLs are served by `/api/files/:name`.
+
 
 ## Cloning / Forking
 

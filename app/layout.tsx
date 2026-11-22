@@ -1,4 +1,5 @@
 import "../global.css";
+import "@pubwave/editor/style.css";
 import { Inter } from "@next/font/google";
 import LocalFont from "@next/font/local";
 import { Metadata } from "next";

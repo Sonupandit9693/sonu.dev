@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server"
+import { Prisma } from "@prisma/client"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
+import { validatePostContent } from "@/lib/blog-content"
 import { prisma } from "@/lib/prisma"
 
 // GET - Fetch all posts
@@ -46,13 +48,30 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json()
-    const { title, content, excerpt, slug, videoUrl, thumbnail } = body
+    const { title, content, excerpt, slug, videoUrl, thumbnail, published = true } = body
 
-    if (!title || !content || !slug) {
+    if (
+      typeof title !== "string" ||
+      !title.trim() ||
+      title.length > 200 ||
+      typeof content !== "string" ||
+      content.length > 2 * 1024 * 1024 ||
+      typeof slug !== "string" ||
+      !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug) ||
+      typeof published !== "boolean" ||
+      (excerpt !== null && excerpt !== undefined && (typeof excerpt !== "string" || excerpt.length > 500)) ||
+      (videoUrl !== null && videoUrl !== undefined && typeof videoUrl !== "string") ||
+      (thumbnail !== null && thumbnail !== undefined && typeof thumbnail !== "string")
+    ) {
       return NextResponse.json(
-        { error: "Missing required fields" },
+        { error: "Post details are invalid or exceed the allowed limits" },
         { status: 400 }
       )
+    }
+
+    const contentError = validatePostContent(content, published)
+    if (contentError) {
+      return NextResponse.json({ error: contentError }, { status: 400 })
     }
 
     // Check if slug already exists
@@ -75,6 +94,7 @@ export async function POST(request: Request) {
         slug,
         videoUrl: videoUrl || null,
         thumbnail: thumbnail || null,
+        published,
         authorId: session.user.id,
       },
       include: {
@@ -90,27 +110,18 @@ export async function POST(request: Request) {
     })
 
     return NextResponse.json(post, { status: 201 })
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Error creating post:", error)
 
-    // Return more specific error messages
-    if (error.code === 'P2002') {
-      return NextResponse.json(
-        { error: "A post with this slug already exists" },
-        { status: 400 }
-      )
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2002") {
+        return NextResponse.json({ error: "A post with this slug already exists" }, { status: 400 })
+      }
+      if (error.code === "P2003") {
+        return NextResponse.json({ error: "Invalid user. Please log out and log back in." }, { status: 400 })
+      }
     }
 
-    if (error.code === 'P2003') {
-      return NextResponse.json(
-        { error: "Invalid user. Please log out and log back in." },
-        { status: 400 }
-      )
-    }
-
-    return NextResponse.json(
-      { error: error.message || "Failed to create post" },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: "Failed to create post" }, { status: 500 })
   }
 }

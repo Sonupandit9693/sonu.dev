@@ -6,13 +6,13 @@ import { Upload, X, Image as ImageIcon } from "lucide-react"
 interface BannerUploadProps {
   value: string
   onChange: (url: string) => void
-  onFileSelect?: (file: File) => void
 }
 
-export default function BannerUpload({ value, onChange, onFileSelect }: BannerUploadProps) {
+export default function BannerUpload({ value, onChange }: BannerUploadProps) {
   const [isDragging, setIsDragging] = useState(false)
   const [preview, setPreview] = useState(value)
   const [error, setError] = useState("")
+  const [uploading, setUploading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const dropZoneRef = useRef<HTMLDivElement>(null)
 
@@ -20,38 +20,48 @@ export default function BannerUpload({ value, onChange, onFileSelect }: BannerUp
     setPreview(value)
   }, [value])
 
-  const handleFile = useCallback((file: File) => {
+  useEffect(() => {
+    return () => {
+      if (preview.startsWith("blob:")) URL.revokeObjectURL(preview)
+    }
+  }, [preview])
+
+  const handleFile = useCallback(async (file: File) => {
     setError("")
 
-    // Validate file type
-    if (!file.type.startsWith("image/")) {
-      setError("Please upload an image file")
+    if (!["image/jpeg", "image/png", "image/webp", "image/gif"].includes(file.type)) {
+      setError("Please upload a JPEG, PNG, WebP, or GIF image")
       return
     }
 
-    // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
       setError("Image size should be less than 5MB")
       return
     }
 
-    // Create preview
-    const reader = new FileReader()
-    reader.onload = (e) => {
-      const result = e.target?.result as string
-      setPreview(result)
-      onChange(result)
-    }
-    reader.onerror = () => {
-      setError("Failed to read file")
-    }
-    reader.readAsDataURL(file)
+    setPreview(URL.createObjectURL(file))
+    setUploading(true)
 
-    // Pass file to parent if callback provided
-    if (onFileSelect) {
-      onFileSelect(file)
+    try {
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        headers: { "Content-Type": file.type },
+        body: file,
+      })
+
+      const result = await response.json()
+      if (!response.ok) {
+        throw new Error(result.error || "Image upload failed")
+      }
+
+      onChange(result.url)
+    } catch (uploadError) {
+      setError(uploadError instanceof Error ? uploadError.message : "Image upload failed")
+      setPreview(value)
+    } finally {
+      setUploading(false)
     }
-  }, [onChange, onFileSelect])
+  }, [onChange, value])
 
   const handleDragEnter = useCallback((e: React.DragEvent) => {
     e.preventDefault()
@@ -125,39 +135,13 @@ export default function BannerUpload({ value, onChange, onFileSelect }: BannerUp
     fileInputRef.current?.click()
   }, [])
 
-  // Add paste listener to the drop zone
-  useEffect(() => {
-    const dropZone = dropZoneRef.current
-    if (!dropZone) return
-
-    const pasteHandler = (e: ClipboardEvent) => {
-      const items = e.clipboardData?.items
-      if (!items) return
-
-      for (let i = 0; i < items.length; i++) {
-        if (items[i].type.startsWith("image/")) {
-          const file = items[i].getAsFile()
-          if (file) {
-            e.preventDefault()
-            handleFile(file)
-            break
-          }
-        }
-      }
-    }
-
-    dropZone.addEventListener("paste", pasteHandler as any)
-    return () => {
-      dropZone.removeEventListener("paste", pasteHandler as any)
-    }
-  }, [handleFile])
-
   return (
     <div className="space-y-3">
       {/* Drop Zone */}
       <div
         ref={dropZoneRef}
         tabIndex={0}
+        aria-label="Banner image upload"
         className={`
           relative border-2 border-dashed rounded-lg transition-all
           ${isDragging
@@ -223,7 +207,7 @@ export default function BannerUpload({ value, onChange, onFileSelect }: BannerUp
             </div>
             <div className="text-center px-4">
               <p className="text-sm font-medium text-white mb-1">
-                {isDragging ? "Drop image here" : "Drop, paste or click to upload"}
+                {uploading ? "Uploading image..." : isDragging ? "Drop image here" : "Drop, paste or click to upload"}
               </p>
               <p className="text-xs text-zinc-500">
                 Supports JPG, PNG, WebP • Max 5MB • Focus to paste (Ctrl+V)
