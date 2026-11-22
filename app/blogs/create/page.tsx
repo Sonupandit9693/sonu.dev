@@ -112,6 +112,20 @@ export default function CreateBlogPage() {
     )
   }
 
+  // UI only: the API rejects non-admin create and upload requests regardless.
+  if (!session.user.isAdmin) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-center">
+          <p className="mb-4 text-zinc-400">Only the site admin can create blog posts.</p>
+          <button type="button" onClick={() => router.push("/blogs")} className="text-white hover:text-zinc-300">
+            Go back to blogs
+          </button>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-zinc-950">
       <header className="sticky top-0 z-10 border-b border-zinc-800 bg-zinc-950/90 backdrop-blur">

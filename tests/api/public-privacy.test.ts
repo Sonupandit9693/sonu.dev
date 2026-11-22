@@ -3,7 +3,7 @@ import { createFakePrisma, findKeys, users } from "../helpers/fake-prisma"
 
 const state = vi.hoisted(() => ({
   prisma: null as unknown,
-  session: null as { user: { id: string } } | null,
+  session: null as { user: { id: string; email: string } } | null,
 }))
 
 vi.mock("@/lib/prisma", () => ({
@@ -26,7 +26,8 @@ const FORBIDDEN = ["email", "password", "authorId", "postId", "userId"]
 let fake: ReturnType<typeof createFakePrisma>
 
 function signInAs(userId: string | null) {
-  state.session = userId ? { user: { id: userId } } : null
+  const user = Object.values(users).find((candidate) => candidate.id === userId)
+  state.session = user ? { user: { id: user.id, email: user.email } } : null
 }
 
 function jsonRequest(url: string, method: string, body: unknown) {
@@ -43,6 +44,8 @@ beforeEach(() => {
   fake = createFakePrisma()
   state.prisma = fake
   signInAs(null)
+  // The post author is the admin; other fixture users are not.
+  process.env.ADMIN_EMAILS = users.author.email
 })
 
 describe("public API contract: no private fields", () => {
@@ -145,7 +148,16 @@ describe("server-side ownership checks are preserved", () => {
     expect(await response.json()).toEqual({ slug: "draft-post" })
   })
 
-  it("a non-owner gets 404 when publishing, and nothing is updated", async () => {
+  it("a non-admin gets 403 when publishing, and nothing is updated", async () => {
+    signInAs(users.other.id)
+    const response = await publishPost(new Request("http://localhost", { method: "PATCH" }), slugParams("draft-post"))
+
+    expect(response.status).toBe(403)
+    expect(fake.calls["post.update"]).toBeUndefined()
+  })
+
+  it("an admin who is not the owner gets 404 when publishing, and nothing is updated", async () => {
+    process.env.ADMIN_EMAILS = `${users.author.email},${users.other.email}`
     signInAs(users.other.id)
     const response = await publishPost(new Request("http://localhost", { method: "PATCH" }), slugParams("draft-post"))
 

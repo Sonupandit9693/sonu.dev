@@ -7,6 +7,8 @@ declare module "next-auth" {
       name?: string | null
       email?: string | null
       image?: string | null
+      // UI visibility only; never used for authorization.
+      isAdmin?: boolean
     }
   }
 

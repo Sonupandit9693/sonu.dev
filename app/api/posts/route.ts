@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server"
 import { Prisma } from "@prisma/client"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
+import { requireAdmin } from "@/lib/authz"
 import { validatePostContent } from "@/lib/blog-content"
 import { prisma } from "@/lib/prisma"
 import { publicAuthorSelect, publicPostSelect } from "@/lib/public-fields"
@@ -33,14 +32,11 @@ export async function GET() {
   }
 }
 
-// POST - Create new post (requires auth)
+// POST - Create new post (admin only)
 export async function POST(request: Request) {
   try {
-    const session = await getServerSession(authOptions)
-
-    if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
+    const admin = await requireAdmin()
+    if (!admin.ok) return admin.response
 
     const body = await request.json()
     const { title, content, excerpt, slug, videoUrl, thumbnail, published = true } = body
@@ -90,7 +86,7 @@ export async function POST(request: Request) {
         videoUrl: videoUrl || null,
         thumbnail: thumbnail || null,
         published,
-        authorId: session.user.id,
+        authorId: admin.userId,
       },
       select: {
         ...publicPostSelect,

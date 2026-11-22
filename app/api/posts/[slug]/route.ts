@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
+import { requireAdmin } from "@/lib/authz"
 import { validatePostContent } from "@/lib/blog-content"
 import { prisma } from "@/lib/prisma"
 import {
@@ -72,17 +73,17 @@ export async function PATCH(
   { params }: { params: { slug: string } },
 ) {
   try {
-    const session = await getServerSession(authOptions)
-    if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
+    // Publishing requires admin AND ownership: admin status never bypasses
+    // the owner check, so other accounts' drafts cannot be published.
+    const admin = await requireAdmin()
+    if (!admin.ok) return admin.response
 
     const post = await prisma.post.findUnique({
       where: { slug: params.slug },
       select: { id: true, authorId: true, content: true },
     })
 
-    if (!post || post.authorId !== session.user.id) {
+    if (!post || post.authorId !== admin.userId) {
       return NextResponse.json({ error: "Post not found" }, { status: 404 })
     }
 

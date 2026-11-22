@@ -1,5 +1,6 @@
 import { NextAuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
+import { isAdminEmail } from "@/lib/admin"
 import { prisma } from "@/lib/prisma"
 import bcrypt from "bcryptjs"
 
@@ -91,6 +92,8 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string
+        // UI visibility only. Route handlers authorize with requireAdmin().
+        session.user.isAdmin = isAdminEmail(session.user.email)
       }
       return session
     }

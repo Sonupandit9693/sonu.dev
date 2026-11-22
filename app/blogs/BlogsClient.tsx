@@ -85,7 +85,7 @@ export default function BlogsClient() {
             >
               Sign Up / Login
             </button>
-          ) : (
+          ) : session.user?.isAdmin && (
             <Link
               href="/blogs/create"
               className="px-6 py-3 bg-white text-zinc-900 font-medium rounded-lg hover:bg-zinc-200 transition-colors"

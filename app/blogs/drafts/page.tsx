@@ -68,9 +68,11 @@ export default function DraftsPage() {
           <h1 className="text-3xl font-bold text-white">Your drafts</h1>
           <p className="mt-2 text-zinc-400">Unpublished posts are visible only to you.</p>
         </div>
-        <Link href="/blogs/create" className="rounded-lg bg-white px-4 py-2 font-medium text-zinc-900">
-          New post
-        </Link>
+        {session.user.isAdmin && (
+          <Link href="/blogs/create" className="rounded-lg bg-white px-4 py-2 font-medium text-zinc-900">
+            New post
+          </Link>
+        )}
       </div>
 
       {error && <p role="alert" className="mb-6 text-red-400">{error}</p>}
@@ -94,14 +96,16 @@ export default function DraftsPage() {
                 <Link href={`/blogs/${encodeURIComponent(draft.slug)}`} className="rounded border border-zinc-700 px-3 py-2 text-sm text-zinc-200 hover:bg-zinc-800">
                   Preview
                 </Link>
-                <button
-                  type="button"
-                  onClick={() => publishDraft(draft)}
-                  disabled={publishingSlug !== null}
-                  className="rounded bg-white px-3 py-2 text-sm font-medium text-zinc-900 disabled:opacity-50"
-                >
-                  {publishingSlug === draft.slug ? "Publishing..." : "Publish"}
-                </button>
+                {session.user.isAdmin && (
+                  <button
+                    type="button"
+                    onClick={() => publishDraft(draft)}
+                    disabled={publishingSlug !== null}
+                    className="rounded bg-white px-3 py-2 text-sm font-medium text-zinc-900 disabled:opacity-50"
+                  >
+                    {publishingSlug === draft.slug ? "Publishing..." : "Publish"}
+                  </button>
+                )}
               </div>
             </li>
           ))}

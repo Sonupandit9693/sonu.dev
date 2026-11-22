@@ -1,8 +1,7 @@
 import { PutObjectCommand } from "@aws-sdk/client-s3"
 import { NextResponse } from "next/server"
 import { randomUUID } from "node:crypto"
-import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
+import { requireAdmin } from "@/lib/authz"
 import {
   getS3Configuration,
   isSupportedImageType,
@@ -40,11 +39,8 @@ async function readImageBody(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const session = await getServerSession(authOptions)
-
-  if (!session?.user?.id) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-  }
+  const admin = await requireAdmin()
+  if (!admin.ok) return admin.response
 
   const contentType = request.headers.get("content-type")?.toLowerCase() ?? ""
   const contentLength = Number(request.headers.get("content-length") ?? 0)
